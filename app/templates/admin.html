@@ -1,0 +1,308 @@
+{% extends "base.html" %}
+{% block content %}
+
+
+<div class="row">
+
+
+    <div class="col-md-6">
+        <div class="card">
+            <div class="header">
+                <h4 class="title">Golfvellir</h4>
+            </div>
+            <div class="content table-responsive table-full-width">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nafn</th>
+                            <th>Stutt nafn</th>
+                            <th>Litur</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for gc in golfcourses %}
+                        <tr style="color: {{gc.color}};">
+                          <td>{{gc.id}}</td>
+                          <td>{{gc.name}}</td>
+                          <td>{{gc.shortname}}</td>
+                          <td>{{gc.color}}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+            </div>
+            <div class="header">
+                <h4 class="title">Bæta við golfvelli</h4>
+            </div>
+            <div class="content">
+                <form action="{{url_for('admin_golfcourse_add', name=path)}}"  method="POST">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Nafn golfvallar</label>
+                                <input type="text" class="form-control border-input" name="name">
+                            </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Stutt nafn (einkvæmur til að uppfæra)</label>
+                                <input type="text" class="form-control border-input" name="shortname">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Litir í hex</label>
+                                <input type="text" class="form-control border-input" name="color">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-success btn-fill btn-wd">Uppfæra/Bæta við</button>
+                    </div>
+                    <div class="clearfix"></div>
+                </form>
+            </div>
+
+
+            <div class="header">
+                <h4 class="title">Eyða golfvelli</h4>
+            </div>
+            <div class="content">
+                <form action="{{url_for('admin_golfcourse_delete', name=path)}}"  method="POST">
+                      <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Stutt nafn (einkvæmur til að uppfæra)</label>
+                                <input type="text" class="form-control border-input" name="shortname">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-danger btn-fill btn-wd">Eyða</button>
+                    </div>
+                    <div class="clearfix"></div>
+                </form>
+            </div>
+        </div>
+      </div>
+
+
+
+
+
+
+
+
+      <div class="col-md-6">
+          <div class="card">
+              <div class="header">
+                  <h4 class="title">Golfkort</h4>
+              </div>
+              <div class="content table-responsive table-full-width">
+                  <table class="table table-striped">
+                      <thead>
+                          <tr>
+                              <th>ID</th>
+                              <th>Stutt nafn</th>
+                              <th>Numer</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                          {% for gca in golfcards %}
+                          <tr style="color: {{gca.color}};">
+                            <td>{{gca.id}}</td>
+                            <td>{{gca.shortname}}</td>
+                            <td>{{gca.number}}</td>
+                          </tr>
+                          {% endfor %}
+                      </tbody>
+                  </table>
+
+              </div>
+              <div class="header">
+                  <h4 class="title">Bæta við golfkorti</h4>
+              </div>
+              <div class="content">
+                  <form action="{{url_for('admin_golfcard_add', name=path)}}"  method="POST">
+                        <div class="row">
+                          <div class="col-md-6">
+                              <div class="form-group">
+                                  <label>Stutt nafn golfvallar</label>
+                                  <input type="text" class="form-control border-input" name="shortname" required>
+                              </div>
+                          </div>
+                          <div class="col-md-6">
+                              <div class="form-group">
+                                  <label>Numer korts</label>
+                                  <input type="text" class="form-control border-input" name="number" required>
+                              </div>
+                          </div>
+                      </div>
+
+                      <div class="text-center">
+                          <button type="submit" class="btn btn-success btn-fill btn-wd">Uppfæra/Bæta við</button>
+                      </div>
+                      <div class="clearfix"></div>
+                  </form>
+              </div>
+
+
+              <div class="header">
+                  <h4 class="title">Eyða golfkorti</h4>
+              </div>
+              <div class="content">
+                  <form action="{{url_for('admin_golfcard_delete', name=path)}}"  method="POST">
+                    <div class="row">
+                      <div class="col-md-6">
+                          <div class="form-group">
+                              <label>Stutt nafn golfvallar</label>
+                              <input type="text" class="form-control border-input" name="shortname" required>
+                          </div>
+                      </div>
+                      <div class="col-md-6">
+                          <div class="form-group">
+                              <label>Numer korts</label>
+                              <input type="text" class="form-control border-input" name="number" required>
+                          </div>
+                      </div>
+                  </div>
+
+                      <div class="text-center">
+                          <button type="submit" class="btn btn-danger btn-fill btn-wd">Eyða</button>
+                      </div>
+                      <div class="clearfix"></div>
+                  </form>
+              </div>
+          </div>
+        </div>
+
+
+
+
+
+
+
+        <div class="col-md-6">
+              <div class="card">
+                  <div class="header">
+                      <h4 class="title">User access table</h4>
+                      <p class="category">Table shows what users have access to admin and statistic pages</p>
+                  </div>
+                  <div class="content table-responsive table-full-width">
+                      <table class="table table-striped">
+                          <thead>
+                              <tr>
+                                  <th>ID</th>
+                                	<th>Email/provider_id</th>
+                                	<th>Access</th>
+                                	<th>Statistics</th>
+                                	<th>Admin</th>
+                              </tr>
+                          </thead>
+                          <tbody>
+                              {% for u in users %}
+                              <tr>
+                                <td>{{u.id}}</td>
+                                <td>{{u.email}}</td>
+                                <td>{{u.company}}</td>
+                                {% if u.role in (1, 0) %}
+                                  <td>x</td>
+                                {% else %}
+                                  <td></td>
+                                {% endif %}
+                                {% if u.role == 0 %}
+                                  <td>x</td>
+                                {% else %}
+                                  <td></td>
+                                {% endif %}
+
+                              </tr>
+                              {% endfor %}
+                          </tbody>
+                      </table>
+
+                  </div>
+              </div>
+          </div>
+
+
+
+
+
+
+    <div class="col-md-6">
+          <div class="card">
+              <div class="header">
+                  <h4 class="title">Warning log</h4>
+                  <p class="category">Table shows all warnings</p>
+              </div>
+              <div class="content table-responsive table-full-width">
+                  <table class="table table-striped">
+                      <thead>
+                          <tr>
+                              <th>ID</th>
+                            	<th>Location</th>
+                            	<th>Date</th>
+                            	<th>Message</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                          {% for ew in errorswarning %}
+                          <tr>
+                            <td>{{ew.id}}</td>
+                            <td>{{ew.location}}</td>
+                            <td>{{ew.date}}</td>
+                            <td>{{ew.error_message}}</td>
+                          </tr>
+                          {% endfor %}
+                      </tbody>
+                  </table>
+
+              </div>
+          </div>
+      </div>
+
+      <div class="col-md-6">
+            <div class="card">
+                <div class="header">
+                    <h4 class="title">Error log</h4>
+                    <p class="category">Table shows all errors</p>
+                </div>
+                <div class="content table-responsive table-full-width">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                              	<th>Location</th>
+                              	<th>Date</th>
+                              	<th>Message</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for ew in errors %}
+                            <tr>
+                              <td>{{ew.id}}</td>
+                              <td>{{ew.location}}</td>
+                              <td>{{ew.date}}</td>
+                              <td>{{ew.error_message}}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+
+
+
+</div>
+
+
+{% endblock %}

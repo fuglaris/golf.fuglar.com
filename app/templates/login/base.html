@@ -1,0 +1,26 @@
+<html>
+  <head>
+    {% assets "login_css" %}
+          <link rel="stylesheet" href="{{ ASSET_URL }}">
+    {% endassets %}
+    {% assets "login_js" %}
+         <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+    {% endassets %}
+
+    {% include "title.html" %}
+  </head>
+  <body>
+  <div class="main-container">
+    <section id="login">
+      <div class="login-container ">
+          <div class="login-frame">
+            <img class="fuglar-logo" src="{{ url_for('static', filename='img/fuglar-logo.png') }}">
+
+              {% block content %}{% endblock %}
+
+          </div>
+      </div>
+    </section>
+  </div>
+  </body>
+</html>

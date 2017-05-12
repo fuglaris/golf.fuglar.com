@@ -1,0 +1,72 @@
+{% extends "login/base.html" %}
+{% block content %}
+
+<form name="login" action="{{url_for('login')}}" method="POST">
+      {% if language == "is" %}
+          <div class="field">
+              {% if status == "user_does_not_exist" %}
+                  <input class="error-window" type="email" required="" name="email" id="email" placeholder="Netfang">
+                  <p class="error-message"> Notandi er ekki til </p>
+              {% else %}
+                  <input type="email" required="" name="email" id="email" placeholder="Netfang">
+              {% endif %}
+          </div>
+          <div class="field">
+              {% if status == "wrong_password" %}
+                  <input class="error-window" type="password" required="" name="password" id="password" placeholder="Lykilorð">
+                  <p class="error-message"> lykilorðið er rangt </p>
+              {% else %}
+                  <input type="password" required="" name="password" id="password" placeholder="Lykilorð">
+              {% endif %}
+          </div>
+          <div class="checkbox remember-me">
+              <label for="remember-me">
+                  <p>Muna eftir mér</p>
+              </label>
+              <input type="checkbox" id="remember-me" class="checkbox style-2 pull-right" checked="checked"/>
+          </div>
+          <button type="submit" class="login-button"><i class="fa fa-key"></i>Innskrá</button>
+          <p> eða </p>
+          <div class="login-withother">
+              <a class="btn btn-social btn-google" href="{{ url_for('oauth_authorize', provider='google') }}">
+                  <span class="fa fa-google"></span> Google
+              </a>
+              <a class="btn btn-social btn-facebook" href="{{ url_for('oauth_authorize', provider='facebook') }}">
+                  <span class="fa fa-facebook"></span> Facebook
+              </a>
+          </div>
+          <p class="signup">Ekki með aðgang? &nbsp;<a href="/register">Nýskrá notanda</a></p>
+      {% else %}
+          <div class="field">
+              {% if status == "user_does_not_exist" %}
+                  <input type="email" required="" name="email" id="email" placeholder="Email">
+                  <p class="error-message"> User does not exist </p>
+              {% else %}
+                  <input type="email" required="" name="email" id="email" placeholder="Email">
+              {% endif %}
+          </div>
+
+          <div class="field">
+              {% if status == "wrong_password" %}
+                  <input type="password" required="" name="password" id="password" placeholder="Password">
+                  <p class="error-message"> Password was incorrect </p>
+              {% else %}
+                  <input type="password" required="" name="password" id="password" placeholder="Password">
+              {% endif %}
+          </div>
+
+          <button type="submit" class="login-button"><i class="fa fa-key"></i>Sign in</button>
+          <p> or </p>
+          <div class="login-withother">
+              <a class="btn btn-social btn-google" href="{{ url_for('oauth_authorize', provider='google') }}">
+                  <span class="fa fa-google"></span> Google
+              </a>
+              <a class="btn btn-social btn-facebook" href="{{ url_for('oauth_authorize', provider='facebook') }}">
+                  <span class="fa fa-facebook"></span> Facebook
+              </a>
+          </div>
+          <p class="signup">Don't have an account? &nbsp;<a href="/register">Sign up</a></p>
+      {% endif %}
+</form>
+
+{% endblock %}

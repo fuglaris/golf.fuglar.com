@@ -1,0 +1,51 @@
+{% extends "login/base.html" %}
+{% block content %}
+
+
+<form name="register"  action="/register" method="POST">
+    {% if language == "is" %}
+      <div class="field">
+        {% if status == "user_already_exists" %}
+            <input class="error-window" type="email" required="" name="email" id="email" placeholder="Netfang">
+            <p class="error-message"> Notandi er ekki til </p>
+        {% else %}
+            <input type="email" required="" name="email" id="email" placeholder="Netfang">
+        {% endif %}
+      </div>
+      <div class="field">
+          <input type="text" required="" name="name" id="name" placeholder="Nafn">
+      </div>
+      <div class="field">
+          <input type="password" required="" name="password" id="password" placeholder="Lykilorð">
+      </div>
+      <div class="field">
+          <input type="text" name="company" id="company"  placeholder="Fyrirtæki">
+      </div>
+      <button type="submit" class="login-button"><i class="fa fa-key"></i>Nýskrá</button>
+
+      <p class="signup">Til baka í &nbsp;<a href="/login">innskráningu</a></p>
+    {% else %}
+      <div class="field">
+          {% if status == "user_already_exists" %}
+              <input class="error-window" type="email" required="" name="email" id="email" placeholder="Email">
+              <p class="error-message"> User already exists </p>
+          {% else %}
+              <input type="email" required="" name="email" id="email" placeholder="Email">
+          {% endif %}
+      </div>
+      <div class="field">
+          <input type="text" required="" name="name" id="name" placeholder="Name">
+      </div>
+      <div class="field">
+          <input type="password" required="" name="password" id="password" placeholder="Password">
+      </div>
+      <div class="field">
+          <input type="text" name="company" id="company"  placeholder="Company">
+      </div>
+      <button type="submit" class="login-button"><i class="fa fa-key"></i>Sign up</button>
+
+      <p class="signup">Back to &nbsp;<a href="/login">login</a></p>
+    {% endif %}
+</form>
+
+{% endblock %}

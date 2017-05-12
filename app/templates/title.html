@@ -1,0 +1,12 @@
+{% block title %}
+<link rel="icon" type="image/jpg" href="{{ url_for('static', filename='img/golf-ball.jpg') }}"/>
+{% if title %}
+  <title>{{ title }}</title>
+{% else %}
+  {% if language == "is" %}
+    <title>Golfkort - Fuglar</title>
+  {% else %}
+    <title>Golftickets - Fuglar</title>
+  {% endif %}
+{% endif %}
+{% endblock %}

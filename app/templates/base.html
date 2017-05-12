@@ -1,0 +1,47 @@
+<html>
+    <head>
+        {% assets "main_css" %}
+            <link rel="stylesheet" href="{{ ASSET_URL }}">
+        {% endassets %}
+
+        {% assets "main_js" %}
+             <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+        {% endassets %}
+
+        {% block head_js %}{% endblock %}
+
+
+        {% include "title.html" %}
+    </head>
+
+    <body>
+
+      <div class="wrapper">
+          <!-- Left -->
+          {% include "menu_left.html" %}
+          <div class="main-panel">
+
+              <!-- Top -->
+              {% include "menu_top.html" %}
+              <!--
+              <div class="alert alert-danger">
+                <button type="button" aria-hidden="true" class="close" onclick="demo.showNotification('top','center')">×</button>
+                <span><b> Danger - </b> This is a regular notification made with ".alert-danger"</span>
+              </div>
+              -->
+
+              <div class="content">
+                  <div class="container-fluid">
+                      {% block content %}{% endblock %}
+                  </div>
+              </div>
+
+              {% include "footer.html" %}
+              <!--Footer -->
+
+          </div>
+      </div>
+
+      {% include "modals.html" %}
+    </body>
+</html>
