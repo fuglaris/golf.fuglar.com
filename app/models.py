@@ -1,5 +1,4 @@
 from app import constants as const
-from app import argon2
 from app import app
 from flask import current_app
 from datetime import datetime
@@ -21,6 +20,10 @@ from sqlalchemy import desc as SqlDesc
 from sqlalchemy.dialects.postgresql import UUID as psql_UUID
 
 from datetime import date, datetime
+
+#hashing algorithm
+from flask_argon2 import Argon2
+argon2 = Argon2(app)
 
 # Create the SQLAlchemy ORM Base class
 Base = declarative_base()
@@ -241,6 +244,38 @@ class Access(Base):
         self.company_id = company_id
 
 
+class CompanyAccess(Base):
+    __tablename__ = 'companiesaccess'
+
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey('users.id'), index=True)
+    company_id = Column(Integer, ForeignKey('companies.id'), index=True)
+
+    __table_args__ = (
+        UniqueConstraint('user_id', 'company_id'),
+    )
+
+    def __init__(self, user_id, company_id):
+        self.user_id = user_id
+        self.company_id = company_id
+
+
+class GolfCourseAccess(Base):
+    __tablename__ = 'golfcoursesaccess'
+
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey('users.id'), index=True)
+    golfcourse_id = Column(Integer, ForeignKey('golfcourses.id'), index=True)
+
+    __table_args__ = (
+        UniqueConstraint('user_id', 'golfcourse_id'),
+    )
+
+    def __init__(self, user_id, golfcourse_id):
+        self.user_id = user_id
+        self.golfcourse_id = golfcourse_id
+
+
 class GolfCourse(Base):
     __tablename__ = 'golfcourses'
 
@@ -392,6 +427,24 @@ class QueryGolfCards(_BaseQuery):
 
 
 class QueryUsedCards(_BaseQuery):
+
+    _Q = """
+        SELECT u.displayname, gc.shortname, gc.color, uc.date, uc.id, c.number
+        FROM usedcards uc
+        JOIN cards c
+        ON uc.card_id = c.id
+        JOIN golfcourses gc
+        ON c.golfcourse_id = gc.id
+        JOIN users u
+        ON uc.user_id = u.id
+        WHERE c.company_id in (
+            SELECT company_id
+            FROM access
+            WHERE user_id = :user_id)
+    """
+
+
+class QueryGolfCourseUsedCards(_BaseQuery):
 
     _Q = """
         SELECT u.displayname, gc.shortname, gc.color, uc.date, uc.id, c.number

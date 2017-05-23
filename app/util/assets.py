@@ -2,6 +2,21 @@ from flask_assets import Bundle
 
 bundles = {
 
+	'golfcourse_js': Bundle(
+		'js/golfcourse.js',
+		output='gen/golfcourse_js.js',
+        filters='jsmin'),
+
+	'calendar_js': Bundle(
+		'js/base.js',
+		output='gen/calendar_js.js',
+        filters='jsmin'),
+
+	'stat_js': Bundle(
+		'js/stat.js',
+		output='gen/stat_js.js',
+        filters='jsmin'),
+
 	'main_js': Bundle(
         'vendor/js/jquery.js',
 		'vendor/js/jquery-ui.min.js',
@@ -13,16 +28,6 @@ bundles = {
 		'vendor/js/locale-all.js',
 		'vendor/js/chartist.min.js',
 		output='gen/main_js.js',
-        filters='jsmin'),
-
-	'calendar_js': Bundle(
-		'js/base.js',
-		output='gen/calendar_js.js',
-        filters='jsmin'),
-
-	'stat_js': Bundle(
-		'js/stat.js',
-		output='gen/stat_js.js',
         filters='jsmin'),
 
 	'main_css': Bundle(

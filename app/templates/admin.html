@@ -37,7 +37,7 @@
                 <h4 class="title">Bæta við golfvelli</h4>
             </div>
             <div class="content">
-                <form action="{{url_for('admin_golfcourse_add', name=path)}}"  method="POST">
+                <form action="{{url_for('admin.golfcourse_add', name=path)}}"  method="POST">
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
@@ -73,7 +73,7 @@
                 <h4 class="title">Eyða golfvelli</h4>
             </div>
             <div class="content">
-                <form action="{{url_for('admin_golfcourse_delete', name=path)}}"  method="POST">
+                <form action="{{url_for('admin.golfcourse_delete', name=path)}}"  method="POST">
                       <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
@@ -129,7 +129,7 @@
                   <h4 class="title">Bæta við golfkorti</h4>
               </div>
               <div class="content">
-                  <form action="{{url_for('admin_golfcard_add', name=path)}}"  method="POST">
+                  <form action="{{url_for('admin.golfcard_add', name=path)}}"  method="POST">
                         <div class="row">
                           <div class="col-md-6">
                               <div class="form-group">
@@ -157,7 +157,7 @@
                   <h4 class="title">Eyða golfkorti</h4>
               </div>
               <div class="content">
-                  <form action="{{url_for('admin_golfcard_delete', name=path)}}"  method="POST">
+                  <form action="{{url_for('admin.golfcard_delete', name=path)}}"  method="POST">
                     <div class="row">
                       <div class="col-md-6">
                           <div class="form-group">

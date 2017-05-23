@@ -1,0 +1,38 @@
+<html>
+    <head>
+        {% assets "main_css" %}
+            <link rel="stylesheet" href="{{ ASSET_URL }}">
+        {% endassets %}
+
+        {% assets "main_js" %}
+             <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+        {% endassets %}
+
+        {% block head_js %}{% endblock %}
+
+
+        {% include "golfcourse/title.html" %}
+    </head>
+
+    <body>
+
+      <div class="wrapper">
+          <!-- Left -->
+          {% include "golfcourse/menu_left.html" %}
+          <div class="main-panel">
+
+              <div class="content">
+                  <div class="container-fluid">
+                      {% block content %}{% endblock %}
+                  </div>
+              </div>
+
+              {% include "golfcourse/footer.html" %}
+              <!--Footer -->
+
+          </div>
+      </div>
+
+      {% include "golfcourse/modals.html" %}
+    </body>
+</html>

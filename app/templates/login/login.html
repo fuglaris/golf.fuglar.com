@@ -1,7 +1,7 @@
 {% extends "login/base.html" %}
 {% block content %}
 
-<form name="login" action="{{url_for('login')}}" method="POST">
+<form name="login" action="{{url_for('general.login')}}" method="POST">
       {% if language == "is" %}
           <div class="field">
               {% if status == "user_does_not_exist" %}
@@ -28,10 +28,10 @@
           <button type="submit" class="login-button"><i class="fa fa-key"></i>Innskrá</button>
           <p> eða </p>
           <div class="login-withother">
-              <a class="btn btn-social btn-google" href="{{ url_for('oauth_authorize', provider='google') }}">
+              <a class="btn btn-social btn-google" href="{{ url_for('general.oauth_authorize', provider='google') }}">
                   <span class="fa fa-google"></span> Google
               </a>
-              <a class="btn btn-social btn-facebook" href="{{ url_for('oauth_authorize', provider='facebook') }}">
+              <a class="btn btn-social btn-facebook" href="{{ url_for('general.oauth_authorize', provider='facebook') }}">
                   <span class="fa fa-facebook"></span> Facebook
               </a>
           </div>
@@ -58,10 +58,10 @@
           <button type="submit" class="login-button"><i class="fa fa-key"></i>Sign in</button>
           <p> or </p>
           <div class="login-withother">
-              <a class="btn btn-social btn-google" href="{{ url_for('oauth_authorize', provider='google') }}">
+              <a class="btn btn-social btn-google" href="{{ url_for('general.oauth_authorize', provider='google') }}">
                   <span class="fa fa-google"></span> Google
               </a>
-              <a class="btn btn-social btn-facebook" href="{{ url_for('oauth_authorize', provider='facebook') }}">
+              <a class="btn btn-social btn-facebook" href="{{ url_for('general.oauth_authorize', provider='facebook') }}">
                   <span class="fa fa-facebook"></span> Facebook
               </a>
           </div>

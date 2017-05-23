@@ -1,0 +1,18 @@
+{% extends "golfcourse/base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-10 col-md-12">
+        <div class="card">
+            <div id="calendar"></div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block head_js %}
+  {% assets "golfcourse_js" %}
+       <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+  {% endassets %}
+{% endblock %}

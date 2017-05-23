@@ -2,7 +2,7 @@
 {% block content %}
 
 
-<form name="register"  action="/register" method="POST">
+<form name="register"  action="{{url_for('general.register')}}" method="POST">
     {% if language == "is" %}
       <div class="field">
         {% if status == "user_already_exists" %}
