@@ -66,36 +66,52 @@ import os
 logger = Logger()
 
 def logg_error(location, error, warning=False):
+    """ Loggs error to database """
+
     with SessionContext() as session:
-        try:
-            err = Error(location=location, error_message=error,
-                current_user_id=current_user.id, warning=warning)
-        except AttributeError:
-            err = Error(location=location, error_message=error,
-                current_user_id=None, warning=warning)
+        i = None
+
+        if current_user:
+            i = current_user.id
+
+        err = Error(
+            location=location,
+            error_message=error,
+            current_user_id=i,
+            warning=warning
+        )
+
         session.add(err)
         session.commit()
+
     return True
 
 
 @app.route('/favicon.ico')
 def favicon():
+    """ Serves favicon """
+
     return url_for('static', filename='img/golf-ball.jpg')
 
 
 @app.errorhandler(404)
 def page_not_found(msg):
+    """ 404 error handler, redirects to index """
+
     return redirect(url_for("index"))
 
 
 @app.errorhandler(BadRequestError)
 def bad_request_handler(error):
-    #return bad_request(error.message)
+    """ Bad request handler, redirects to index """
+
     return redirect(url_for("index"))
 
 
 @app.before_request
 def before_request():
+    """ Redirects user to secure https if page is requested as http """
+
     if not 'localhost' in request.url:
         if request.url.startswith('http://'):
             url = request.url.replace('http://', 'https://', 1)
@@ -105,18 +121,14 @@ def before_request():
 
 @app.context_processor
 def utility_processor():
-    """ Context_processor is used to serve all templates with
-        returned dictionary """
+    """ Serves all templates with base dict, containing language, user, etc. """
 
     with SessionContext() as session:
-        #qusm = QueryUnseenMessages()
-        #messages = qusm.execute(session=session, userId=current_user.get_id())
-
-        #return dict(language="is", user=current_user, unseen_notification=messages)
         try:
             access = session.query(Access.id).filter_by(user_id=current_user.id).all()
             companies = session.query(Company).filter(Company.id.in_([company_id for company_id in access])).all()
         except AttributeError:
+            # AttributeError is catched if current_user is not defined.
             companies = None
 
         return dict(language="is", user=current_user, companies=companies)
@@ -138,6 +150,8 @@ def settings():
 @app.route('/profile', methods=['GET', 'POST'])
 @login_required
 def profile():
+
+    # If request is GET, serve template for profile, otherwise its POST request
     if request.method == 'GET':
         return render_template("profile.html")
 
@@ -147,15 +161,18 @@ def profile():
 
             if request.form.get('company'):
                 user.company = request.form.get('company')
+
             if request.form.get("displayname"):
                 user.displayname = request.form.get("displayname")[:10]
 
+            # Add and commit this user changes to database.
             session.add(user)
             session.commit()
+
         except Exception as e:
             session.rollback()
+            # Logg error to database
             logg_error(location='profile', error=str(e))
-            return redirect(url_for('profile'))
 
     return redirect(url_for('profile'))
 
@@ -178,11 +195,13 @@ def admin(name):
         qGC = QueryGolfCourses()
         qGCa = QueryGolfCards()
 
-    return render_template("admin.html", users=qU.execute(session=session),
+    return render_template("admin.html",
+        users=qU.execute(session=session),
         errorswarning=qEW.execute(session=session),
         errors=qE.execute(session=session),
         golfcourses=qGC.execute(session=session, company_id=company.id),
-        golfcards=qGCa.execute(session=session, company_id=company.id), path=name)
+        golfcards=qGCa.execute(session=session, company_id=company.id),
+        path=name)
 
 
 @app.route('/admin_golfcourse_add/<name>', methods=["POST"])

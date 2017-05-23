@@ -9,7 +9,6 @@ from flask_argon2 import Argon2
 
 app = Flask(__name__)
 argon2 = Argon2(app)
-app.config.from_object('config')
 
 from flask_login import LoginManager
 
