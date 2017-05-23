@@ -1,5 +1,7 @@
 from app import constants as const
 from app import argon2
+from app import app
+from flask import current_app
 from datetime import datetime
 from flask_login import current_user
 
@@ -39,7 +41,8 @@ class DB_Connection:
         # conn_str = 'sqlite:///user.db'
         # conn_str = 'postgresql+psycopg2://user:password@hostname/database_name'
         # conn_str = 'postgresql+psycopg2://test:testtest@localhost/test'
-        conn_str = 'postgresql+psycopg2://sojheuyzpdffcl:641961e7383892e4c407266f64423ef3155e67f9956afc14967cc64b9ff28994@ec2-176-34-111-152.eu-west-1.compute.amazonaws.com:5432/dflmsqumpg8dus'
+        #conn_str = 'postgresql+psycopg2://sojheuyzpdffcl:641961e7383892e4c407266f64423ef3155e67f9956afc14967cc64b9ff28994@ec2-176-34-111-152.eu-west-1.compute.amazonaws.com:5432/dflmsqumpg8dus'
+        conn_str = current_app.config['DATABASE_URI']
         self._engine = create_engine(conn_str)
         # Create a Session class bound to this engine
         self._Session = sessionmaker(bind=self._engine)
