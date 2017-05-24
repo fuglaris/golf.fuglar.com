@@ -36,7 +36,7 @@ def requires_roles(*roles):
                 role = session.query(User).filter_by(id=current_user.id).first()
                 userrole = ROLE[int(role.role)]
                 if userrole not in roles:
-                    return redirect(url_for('general.index'))
+                    return redirect(url_for('index'))
             return f(*args, **kwargs)
         return wrapped
     return wrapper
@@ -85,7 +85,7 @@ def is_logged_in(orig_func):
     def wrapper(*args, **kwargs):
         try:
             if not current_user.is_anonymous():
-                return redirect(url_for('general.index'))
+                return redirect(url_for('index'))
         except TypeError:
             return orig_func(*args, **kwargs)
     return wrapper
