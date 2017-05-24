@@ -7,6 +7,8 @@ from flask_assets import Environment, Bundle
 
 app = Flask(__name__)
 
+app.config.from_object('config.ProductionConfig')
+
 from flask_login import LoginManager, current_user, AnonymousUserMixin
 
 class Anonymous(AnonymousUserMixin):
