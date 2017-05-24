@@ -24,56 +24,7 @@ from app.decorators import (
     is_logged_in, requires_roles
 )
 
-mod = Blueprint('general', __name__)
-
-
-@mod.before_request
-def before_request():
-
-    if current_user and current_user.role == 4:
-        return render_template("golfcourse/index.html")
-
-@mod.route('/')
-@login_required
-def index():
-    return render_template("index.html")
-
-
-@mod.route('/profile', methods=['GET', 'POST'])
-@login_required
-def profile():
-
-    # If request is GET, serve template for profile, otherwise its POST request
-    if request.method == 'GET':
-        return render_template("profile.html")
-
-    with SessionContext() as session:
-        try:
-            user = session.query(User).filter_by(id=current_user.id).first()
-
-            if request.form.get('company'):
-                user.company = request.form.get('company')
-
-            if request.form.get("displayname"):
-                user.displayname = request.form.get("displayname")[:10]
-
-            # Add and commit this user changes to database.
-            session.add(user)
-            session.commit()
-
-        except Exception as e:
-            session.rollback()
-            # Logg error to database
-            logg_error(location='profile', error=str(e))
-
-    return redirect(url_for('general.profile'))
-
-
-@mod.route('/statistics')
-@login_required
-@requires_roles('admin', 'staff')
-def statistics():
-    return render_template("statistics.html")
+mod = Blueprint('auth', __name__)
 
 
 @mod.route('/login', methods=['GET', 'POST'])
@@ -84,7 +35,7 @@ def login():
         otherwise it redirects back to login """
 
     if request.method == 'GET':
-        return render_template("login/login.html")
+        return render_template("auth/login.html")
 
     with SessionContext(commit=True) as session:
         try:
@@ -96,13 +47,13 @@ def login():
             if not registerd_user:
                 logger.login_failed_user(request.form.get('email'))
                 logg_error(location="login", error="Logged in with email that does not exist in database, {email}".format(email=request.form.get('email')), warning=True)
-                return render_template("login/login.html", status='user_does_not_exist')
+                return render_template("auth/login.html", status='user_does_not_exist')
 
             # If user password is incorrect, redirect to login with status message
             if not registerd_user.check_password(password=request.form.get('password')):
                 logger.login_failed_password(request.form.get('email'))
                 logg_error(location="login", error="Logged in with incorrect password {email}".format(email=request.form.get('email')), warning=True)
-                return render_template("login/login.html", status='wrong_password')
+                return render_template("auth/login.html", status='wrong_password')
 
             remember_me = request.form.get('remember_me') is not None
             login_user(registerd_user, remember=remember_me)
@@ -110,9 +61,9 @@ def login():
         except Exception as e:
             session.rollback()
             logg_error(location='login', error=str(e))
-            return redirect(url_for('general.index'))
+            return redirect(url_for('index'))
 
-        return redirect(url_for('general.index'))
+        return redirect(url_for('index'))
 
 
 @mod.route('/register', methods=['GET', 'POST'])
@@ -123,7 +74,7 @@ def register():
         Redirects to login """
 
     if request.method == 'GET':
-        return render_template("login/register.html")
+        return render_template("auth/register.html")
 
     with SessionContext() as session:
         try:
@@ -138,12 +89,12 @@ def register():
             session.rollback()
             logger.register_failed(request.form.get('email'))
             logg_error(location='register', error="Tried to register with email that already exists in database {email}".format(email=request.form.get('email')), warning=True)
-            return render_template("login/register.html",
+            return render_template("auth/register.html",
                                    status='user_already_exists')
         except Exception as e:
             sesison.rollback()
             logg_error(location='register', error=str(e))
-            return render_template("login/register.html",
+            return render_template("auth/register.html",
                                    status='error in registry')
 
         company = session.query(Company).filter_by(name='Fuglar').first()
@@ -154,7 +105,7 @@ def register():
         logger.register_successful(request.form.get('email'))
         send_mail(request.form['email'])
         login_user(user, remember=False)
-        return redirect(url_for('general.login'))
+        return redirect(url_for('auth.login'))
 
 
 @mod.route('/authorize/<provider>')
@@ -162,7 +113,7 @@ def register():
 def oauth_authorize(provider):
     """ Used to call login provider """
     if not current_user.is_anonymous:
-        return redirect(url_for('general.index'))
+        return redirect(url_for('index'))
     oauth = OAuthSignIn.get_provider(provider)
     return oauth.authorize()
 
@@ -174,13 +125,13 @@ def oauth_callback(provider):
         Allways redirects to index """
 
     if not current_user.is_anonymous:
-        return redirect(url_for('general.index'))
+        return redirect(url_for('index'))
 
     oauth = OAuthSignIn.get_provider(provider)
     id, email, name = oauth.callback()
     if email is None:
         logg_error(location='oauth_callback-{provider}'.format(provider=provider), error="No email supplied from provider, id: {id}, name: {name}".format(id=id, name=name))
-        return redirect(url_for('general.index'))
+        return redirect(url_for('index'))
 
     with SessionContext() as session:
         oauth_user = session.query(OAuth_User)\
@@ -219,14 +170,14 @@ def oauth_callback(provider):
                     session.commit()
                 except UnboundLocalError:
                     pass
-                return redirect(url_for('general.index'))
+                return redirect(url_for('index'))
         else:
             user = session.query(User).filter_by(id=oauth_user.user_id).first()
             logger.oauth_login_successful(email)
 
 
         login_user(user, remember=True)
-        return redirect(url_for('general.index'))
+        return redirect(url_for('index'))
 
 '''
 @app.route("/reauthenticate", methods=["GET", "POST"])
@@ -248,7 +199,7 @@ def reauth():
 @login_required
 def logout():
     logout_user()
-    return redirect(url_for('general.login'))
+    return redirect(url_for('auth.login'))
 
 
 """ REMEMBER

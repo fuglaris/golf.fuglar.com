@@ -79,7 +79,7 @@ def golfcourse_add(name):
         session.add(golfcourse)
         session.commit()
 
-    return redirect(url_for("admin", name=name))
+    return redirect(url_for("admin.admin", name=name))
 
 
 @mod.route('/golfcourse_delete/<name>', methods=["POST"])
@@ -103,7 +103,7 @@ def golfcourse_delete(name):
         except exc.IntegrityError as e:
             pass
 
-    return redirect(url_for("admin", name=name))
+    return redirect(url_for("admin.admin", name=name))
 
 
 @mod.route('/golfcard_add/<name>', methods=["POST"])
@@ -132,7 +132,7 @@ def golfcard_add(name):
         except Exception as e:
             pass
 
-    return redirect(url_for("admin", name=name))
+    return redirect(url_for("admin.admin", name=name))
 
 
 @mod.route('/golfcard_delete/<name>', methods=["POST"])

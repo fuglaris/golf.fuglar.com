@@ -1,7 +1,7 @@
-{% extends "login/base.html" %}
+{% extends "auth/base.html" %}
 {% block content %}
 
-<form name="login" action="{{url_for('general.login')}}" method="POST">
+<form name="login" action="{{url_for('auth.login')}}" method="POST">
       {% if language == "is" %}
           <div class="field">
               {% if status == "user_does_not_exist" %}
@@ -28,14 +28,14 @@
           <button type="submit" class="login-button"><i class="fa fa-key"></i>Innskrá</button>
           <p> eða </p>
           <div class="login-withother">
-              <a class="btn btn-social btn-google" href="{{ url_for('general.oauth_authorize', provider='google') }}">
+              <a class="btn btn-social btn-google" href="{{ url_for('auth.oauth_authorize', provider='google') }}">
                   <span class="fa fa-google"></span> Google
               </a>
-              <a class="btn btn-social btn-facebook" href="{{ url_for('general.oauth_authorize', provider='facebook') }}">
+              <a class="btn btn-social btn-facebook" href="{{ url_for('auth.oauth_authorize', provider='facebook') }}">
                   <span class="fa fa-facebook"></span> Facebook
               </a>
           </div>
-          <p class="signup">Ekki með aðgang? &nbsp;<a href="/register">Nýskrá notanda</a></p>
+          <p class="signup">Ekki með aðgang? &nbsp;<a href="{{url_for('auth.register')}}">Nýskrá notanda</a></p>
       {% else %}
           <div class="field">
               {% if status == "user_does_not_exist" %}
@@ -58,14 +58,14 @@
           <button type="submit" class="login-button"><i class="fa fa-key"></i>Sign in</button>
           <p> or </p>
           <div class="login-withother">
-              <a class="btn btn-social btn-google" href="{{ url_for('general.oauth_authorize', provider='google') }}">
+              <a class="btn btn-social btn-google" href="{{ url_for('auth.oauth_authorize', provider='google') }}">
                   <span class="fa fa-google"></span> Google
               </a>
-              <a class="btn btn-social btn-facebook" href="{{ url_for('general.oauth_authorize', provider='facebook') }}">
+              <a class="btn btn-social btn-facebook" href="{{ url_for('auth.oauth_authorize', provider='facebook') }}">
                   <span class="fa fa-facebook"></span> Facebook
               </a>
           </div>
-          <p class="signup">Don't have an account? &nbsp;<a href="/register">Sign up</a></p>
+          <p class="signup">Don't have an account? &nbsp;<a href="{{url_for('auth.register')}}">Sign up</a></p>
       {% endif %}
 </form>
 

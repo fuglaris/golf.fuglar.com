@@ -1,8 +1,8 @@
-{% extends "login/base.html" %}
+{% extends "auth/base.html" %}
 {% block content %}
 
 
-<form name="register"  action="{{url_for('general.register')}}" method="POST">
+<form name="register"  action="{{url_for('auth.register')}}" method="POST">
     {% if language == "is" %}
       <div class="field">
         {% if status == "user_already_exists" %}
@@ -23,7 +23,7 @@
       </div>
       <button type="submit" class="login-button"><i class="fa fa-key"></i>Nýskrá</button>
 
-      <p class="signup">Til baka í &nbsp;<a href="/login">innskráningu</a></p>
+      <p class="signup">Til baka í &nbsp;<a href="{{url_for('auth.login')}}" >innskráningu</a></p>
     {% else %}
       <div class="field">
           {% if status == "user_already_exists" %}
@@ -44,7 +44,7 @@
       </div>
       <button type="submit" class="login-button"><i class="fa fa-key"></i>Sign up</button>
 
-      <p class="signup">Back to &nbsp;<a href="/login">login</a></p>
+      <p class="signup">Back to &nbsp;<a href="{{url_for('auth.login')}}">login</a></p>
     {% endif %}
 </form>
 
