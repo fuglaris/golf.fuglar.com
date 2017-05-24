@@ -66,7 +66,7 @@ def utility_processor():
 
     with SessionContext() as session:
         try:
-            access = session.query(Access.id).filter_by(user_id=current_user.id).all()
+            access = session.query(Access.company_id).filter_by(user_id=current_user.id).all()
             companies = session.query(Company).filter(Company.id.in_([company_id for company_id in access])).all()
         except AttributeError:
             # AttributeError is catched if current_user is not defined.
