@@ -1,0 +1,21 @@
+{% extends "_base.html" %}
+{% block content %}
+
+{% include "main/_sidebar.html" %}
+<div class="main-panel">
+
+    {% include "_topbar.html" %}
+
+    <div class="content">
+        <div class="container-fluid">
+            {% block main %}{% endblock %}
+        </div>
+    </div>
+
+    {% include "_footer.html" %}
+
+</div>
+
+{% include "main/_modals.html" %}
+
+{% endblock %}

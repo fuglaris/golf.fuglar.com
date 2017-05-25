@@ -1,4 +1,4 @@
-{% block menu_left %}
+{% block _sidebar %}
 <div class="sidebar" data-background-color="white" data-active-color="danger">
 
 <!--
@@ -19,7 +19,7 @@ Tip 2: you can change the color of the active button using the data-active-color
             {% else %}
             <li>
             {% endif %}
-                <a href="{{url_for('general.index')}}">
+                <a href="{{url_for('index')}}">
                     <i class="fa fa-calendar-minus-o"></i>
                     <p>Golfkort</p>
                 </a>
@@ -30,7 +30,7 @@ Tip 2: you can change the color of the active button using the data-active-color
             {% else %}
             <li>
             {% endif %}
-                <a href="{{url_for('general.profile')}}">
+                <a href="{{url_for('profile')}}">
                     <i class="fa fa-user"></i>
                     <p>Notandasnið</p>
                 </a>
@@ -42,7 +42,7 @@ Tip 2: you can change the color of the active button using the data-active-color
               {% else %}
               <li>
               {% endif %}
-                  <a href="{{url_for('general.statistics')}}">
+                  <a href="{{url_for('statistics')}}">
                       <i class="fa fa-bar-chart"></i>
                       <p>Tölfræði</p>
                   </a>
@@ -51,12 +51,12 @@ Tip 2: you can change the color of the active button using the data-active-color
 
             {% if user.get_role() == 'admin' %}
               {% for comp in companies %}
-                {% if '/admin' in request.path and comp.name in request.path %}
+                {% if '/c/' in request.path and comp.name in request.path %}
                 <li class="active">
                 {% else %}
                 <li>
                 {% endif %}
-                    <a href="{{url_for('admin.admin', name=comp.name)}}">
+                    <a href="{{url_for('company', name=comp.name)}}">
                         <i class="fa fa-users "></i>
                         <p>{{comp.name}}</p>
                     </a>
@@ -67,7 +67,7 @@ Tip 2: you can change the color of the active button using the data-active-color
 
 
             <li>
-                <a href="{{url_for('general.logout')}}">
+                <a href="{{url_for('auth.logout')}}">
                     <i class="fa fa-key"></i>
                     <p>Útskrá</p>
                 </a>

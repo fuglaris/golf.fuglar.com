@@ -64,7 +64,7 @@ from app.util.assets import bundles
 assets = Environment(app)
 assets.register(bundles)
 
-from app.views import views
+from app.views import main
 
 from app.views import auth
 from app.views import api

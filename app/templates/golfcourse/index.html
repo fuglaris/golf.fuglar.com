@@ -1,12 +1,26 @@
-{% extends "golfcourse/base.html" %}
+{% extends "_base.html" %}
 
 {% block content %}
-<div class="row">
-    <div class="col-lg-10 col-md-12">
-        <div class="card">
-            <div id="calendar"></div>
+
+
+{% include "golfcourse/_sidebar.html" %}
+<div class="main-panel">
+
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-10 col-md-12">
+                    <div class="card">
+                        <div id="calendar"></div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+
+    {% include "_footer.html" %}
+    <!--Footer -->
+
 </div>
 
 {% endblock %}

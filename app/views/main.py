@@ -19,7 +19,8 @@ from app.mail import send_mail
 from app.oauth import OAuthSignIn
 from app.constants import BadRequestError
 from app.models import (
-    SessionContext, IntegrityError, User, Company, Access, OAuth_User, Error
+    SessionContext, IntegrityError, User, Company, Access, OAuth_User, Error,
+    QueryUsers, QueryErrorWarning, QueryError, QueryGolfCourses, QueryGolfCards
 )
 from app.decorators import (
     validate_login, validate_registration, validate_provider,
@@ -72,19 +73,20 @@ def utility_processor():
             # AttributeError is catched if current_user is not defined.
             companies = None
 
-        return dict(language="is", user=current_user, companies=companies)
+        return dict(language="is", user=current_user, companies=companies, version='1.0.1')
 
+"""
 
 @app.before_request
 def before_request():
-
     if current_user and current_user.role == 4:
         return render_template("golfcourse/index.html")
+"""
 
 @app.route('/')
 @login_required
 def index():
-    return render_template("index.html")
+    return render_template("main/index.html")
 
 
 @app.route('/profile', methods=['GET', 'POST'])
@@ -93,7 +95,7 @@ def profile():
 
     # If request is GET, serve template for profile, otherwise its POST request
     if request.method == 'GET':
-        return render_template("profile.html")
+        return render_template("main/profile.html")
 
     with SessionContext() as session:
         try:
@@ -121,4 +123,31 @@ def profile():
 @login_required
 @requires_roles('admin', 'staff')
 def statistics():
-    return render_template("statistics.html")
+    return render_template("main/statistics.html")
+
+
+@app.route('/c/<name>')
+@login_required
+@requires_roles('admin')
+def company(name):
+    with SessionContext() as session:
+        company = session.query(Company).filter_by(name=name).first()
+        access = session.query(Access).filter_by(user_id=current_user.id)\
+            .filter_by(company_id=company.id).first()
+
+        if not access:
+            return redirect(url_for("index"))
+
+        qU = QueryUsers()
+        qEW = QueryErrorWarning()
+        qE = QueryError()
+        qGC = QueryGolfCourses()
+        qGCa = QueryGolfCards()
+
+    return render_template("main/company.html",
+        users=qU.execute(session=session),
+        errorswarning=qEW.execute(session=session),
+        errors=qE.execute(session=session),
+        golfcourses=qGC.execute(session=session, company_id=company.id),
+        golfcards=qGCa.execute(session=session, company_id=company.id),
+        path=name)

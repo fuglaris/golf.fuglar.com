@@ -1,5 +1,5 @@
-{% extends "base.html" %}
-{% block content %}
+{% extends "main/_base.html" %}
+{% block main %}
 
 
 <div class="row">
@@ -14,7 +14,6 @@
                 <table class="table table-striped">
                     <thead>
                         <tr>
-                            <th>ID</th>
                             <th>Nafn</th>
                             <th>Stutt nafn</th>
                             <th>Litur</th>
@@ -23,7 +22,6 @@
                     <tbody>
                         {% for gc in golfcourses %}
                         <tr style="color: {{gc.color}};">
-                          <td>{{gc.id}}</td>
                           <td>{{gc.name}}</td>
                           <td>{{gc.shortname}}</td>
                           <td>{{gc.color}}</td>
@@ -33,6 +31,7 @@
                 </table>
 
             </div>
+            <!--
             <div class="header">
                 <h4 class="title">Bæta við golfvelli</h4>
             </div>
@@ -46,6 +45,7 @@
                             </div>
                         </div>
                       </div>
+
                       <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
@@ -61,13 +61,13 @@
                         </div>
                     </div>
 
+
                     <div class="text-center">
                         <button type="submit" class="btn btn-success btn-fill btn-wd">Uppfæra/Bæta við</button>
                     </div>
                     <div class="clearfix"></div>
                 </form>
             </div>
-
 
             <div class="header">
                 <h4 class="title">Eyða golfvelli</h4>
@@ -89,6 +89,7 @@
                     <div class="clearfix"></div>
                 </form>
             </div>
+            -->
         </div>
       </div>
 
@@ -108,7 +109,6 @@
                   <table class="table table-striped">
                       <thead>
                           <tr>
-                              <th>ID</th>
                               <th>Stutt nafn</th>
                               <th>Numer</th>
                           </tr>
@@ -116,7 +116,6 @@
                       <tbody>
                           {% for gca in golfcards %}
                           <tr style="color: {{gca.color}};">
-                            <td>{{gca.id}}</td>
                             <td>{{gca.shortname}}</td>
                             <td>{{gca.number}}</td>
                           </tr>
@@ -125,6 +124,7 @@
                   </table>
 
               </div>
+              <!--
               <div class="header">
                   <h4 class="title">Bæta við golfkorti</h4>
               </div>
@@ -179,6 +179,7 @@
                       <div class="clearfix"></div>
                   </form>
               </div>
+              -->
           </div>
         </div>
 

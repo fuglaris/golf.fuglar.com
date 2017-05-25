@@ -25,33 +25,6 @@ from app.models import (
 mod = Blueprint('admin', __name__, url_prefix='/admin')
 
 
-@mod.route('/<name>')
-@login_required
-@requires_roles('admin')
-def admin(name):
-    with SessionContext() as session:
-        company = session.query(Company).filter_by(name=name).first()
-        access = session.query(Access).filter_by(user_id=current_user.id)\
-            .filter_by(company_id=company.id).first()
-
-        if not access:
-            return redirect(url_for("index"))
-
-        qU = QueryUsers()
-        qEW = QueryErrorWarning()
-        qE = QueryError()
-        qGC = QueryGolfCourses()
-        qGCa = QueryGolfCards()
-
-    return render_template("admin.html",
-        users=qU.execute(session=session),
-        errorswarning=qEW.execute(session=session),
-        errors=qE.execute(session=session),
-        golfcourses=qGC.execute(session=session, company_id=company.id),
-        golfcards=qGCa.execute(session=session, company_id=company.id),
-        path=name)
-
-
 @mod.route('/golfcourse_add/<name>', methods=["POST"])
 @login_required
 @requires_roles('admin')
