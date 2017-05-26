@@ -12,8 +12,9 @@ app.config.from_object('config.ProductionConfig')
 from flask_login import LoginManager, current_user, AnonymousUserMixin
 
 class Anonymous(AnonymousUserMixin):
-  def __init__(self):
-    self.role = -1
+    def __init__(self):
+        self.role = -1
+        self.id = None
 
 login_manager = LoginManager()
 login_manager.init_app(app)
