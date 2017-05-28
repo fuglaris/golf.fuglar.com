@@ -61,7 +61,7 @@ $(document).ready(function() {
 
     function init(){
         $.ajax({
-            url: "/usedcards",
+            url: window.location.href + "/usedcards",
             type: "GET",
             contentType: "application/json; charset=utf-8",
             success: function (data) {
@@ -204,9 +204,9 @@ $(document).ready(function() {
           header: {
               left: "prev,next",
               center: "title",
-              right: "today"
+              right: 'month,basicWeek,basicDay'
           },
-          defaultView: "agendaWeek",
+          defaultView: "basicWeek",
           eventLimit: 20, // allow "more" link when too many events
           events: data,
           lang: "is",

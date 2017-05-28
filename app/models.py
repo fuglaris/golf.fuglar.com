@@ -455,10 +455,11 @@ class QueryGolfCourseUsedCards(_BaseQuery):
         ON c.golfcourse_id = gc.id
         JOIN users u
         ON uc.user_id = u.id
-        WHERE c.company_id in (
-            SELECT company_id
-            FROM access
-            WHERE user_id = :user_id)
+        WHERE c.golfcourse_id in (
+            SELECT golfcourse_id
+            FROM golfcoursesaccess
+            WHERE user_id = :user_id
+        )
     """
 
 
