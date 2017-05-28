@@ -20,7 +20,8 @@ from app.oauth import OAuthSignIn
 from app.constants import BadRequestError
 from app.models import (
     SessionContext, IntegrityError, User, Company, Access, OAuth_User, Error,
-    QueryUsers, QueryErrorWarning, QueryError, QueryGolfCourses, QueryGolfCards
+    QueryUsers, QueryErrorWarning, QueryError, QueryGolfCourses, QueryGolfCards,
+    GolfCourseAccess, GolfCourse
 )
 from app.decorators import (
     validate_login, validate_registration, validate_provider,
@@ -58,6 +59,27 @@ def before_request():
             url = request.url.replace('http://', 'https://', 1)
             code = 301
             return redirect(url, code=code)
+
+    if 'static/' in request.url:
+        return
+
+    if '/logout' in request.url:
+        return
+
+    if current_user.role == 3:
+        with SessionContext() as session:
+            gcaccess = session.query(GolfCourseAccess)\
+                .filter_by(user_id=current_user.id).first()
+
+            golfcourse = session.query(GolfCourse)\
+                .filter_by(id=gcaccess.golfcourse_id).first()
+
+
+            if url_for('golfcourse.golfcourse', name=golfcourse.shortname) not in request.url:
+                return redirect(url_for('golfcourse.golfcourse', name=golfcourse.shortname))
+
+
+
 
 
 

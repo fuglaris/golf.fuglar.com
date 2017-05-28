@@ -1,5 +1,5 @@
 import logging
-from app.models import SessionContext
+from app.models import SessionContext, Error
 from flask_login import current_user
 
 

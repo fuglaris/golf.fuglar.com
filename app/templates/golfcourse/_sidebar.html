@@ -3,8 +3,8 @@
 
   <div class="sidebar-wrapper">
         <div class="logo">
-            <a href="http://www.fuglar.com" class="simple-text">
-                Golfkort Fugla
+            <a class="simple-text">
+                Golfkort {{golfcourse_name}}
             </a>
         </div>
 
@@ -20,56 +20,34 @@
                 </a>
             </li>
 
-            {% if request.path == '/profile' %}
-            <li class="active">
-            {% else %}
-            <li>
-            {% endif %}
-                <a href="{{url_for('profile')}}">
-                    <i class="fa fa-user"></i>
-                    <p>Notandasnið</p>
-                </a>
-            </li>
-
-            {% if user.get_role() in ('admin', 'staff') %}
-              {% if request.path == '/statistics' %}
-              <li class="active">
-              {% else %}
-              <li>
-              {% endif %}
-                  <a href="{{url_for('statistics')}}">
-                      <i class="fa fa-bar-chart"></i>
-                      <p>Tölfræði</p>
-                  </a>
-              </li>
-            {% endif %}
-
-            {% if user.get_role() == 'admin' %}
-              {% for comp in companies %}
-                {% if '/admin' in request.path and comp.name in request.path %}
-                <li class="active">
-                {% else %}
-                <li>
-                {% endif %}
-                    <a href="{{url_for('admin.admin', name=comp.name)}}">
-                        <i class="fa fa-users "></i>
-                        <p>{{comp.name}}</p>
-                    </a>
-                </li>
-              {% endfor %}
-
-            {% endif %}
-
-
             <li>
                 <a href="{{url_for('auth.logout')}}">
                     <i class="fa fa-key"></i>
                     <p>Útskrá</p>
                 </a>
             </li>
+        </ul>
+
+        <div class="logo">
+        </div>
+
+        <ul class="nav">
+            {% if request.path == '/' %}
+            <li class="active">
+            {% else %}
+            <li>
+            {% endif %}
+                <a href="{{url_for('index')}}">
+                    <i class="fa fa-calendar-minus-o"></i>
+                    <p>Golfkort</p>
+                </a>
+            </li>
+
 
 
         </ul>
+
+
   </div>
 </div>
 

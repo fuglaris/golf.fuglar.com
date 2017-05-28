@@ -12,8 +12,10 @@ app.config.from_object('config.ProductionConfig')
 from flask_login import LoginManager, current_user, AnonymousUserMixin
 
 class Anonymous(AnonymousUserMixin):
-  def __init__(self):
-    self.role = -1
+    def __init__(self):
+        self.role = -1
+        self.id = None
+
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -69,6 +71,8 @@ from app.views import main
 from app.views import auth
 from app.views import api
 from app.views import admin
+from app.views import golfcourse
 app.register_blueprint(auth.mod)
 app.register_blueprint(api.mod)
 app.register_blueprint(admin.mod)
+app.register_blueprint(golfcourse.mod)
