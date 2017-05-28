@@ -16,7 +16,6 @@ class Anonymous(AnonymousUserMixin):
         self.role = -1
         self.id = None
 
-
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'auth.login'
