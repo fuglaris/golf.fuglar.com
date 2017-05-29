@@ -61,7 +61,7 @@ $(document).ready(function() {
 
     function init(){
         $.ajax({
-            url: window.location.href + "/usedcards",
+            url: "golfcourse/usedcards",
             type: "GET",
             contentType: "application/json; charset=utf-8",
             success: function (data) {

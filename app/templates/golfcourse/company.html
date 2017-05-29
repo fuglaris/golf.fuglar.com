@@ -1,0 +1,99 @@
+{% extends "golfcourse/_base.html" %}
+{% block main %}
+
+
+<div class="row">
+
+
+
+      <div class="col-md-6">
+          <div class="card">
+              <div class="header">
+                  <h4 class="title">Golfkort</h4>
+              </div>
+              <div class="content table-responsive table-full-width">
+                  <table class="table table-striped">
+                      <thead>
+                          <tr>
+                              <th>Stutt nafn</th>
+                              <th>Numer</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                          {% for gca in golfcards %}
+                          <tr style="color: {{gca.color}};">
+                            <td>{{gca.shortname}}</td>
+                            <td>{{gca.number}}</td>
+                          </tr>
+                          {% endfor %}
+                      </tbody>
+                  </table>
+
+              </div>
+
+              <div class="header">
+                  <h4 class="title">Bæta við golfkorti</h4>
+              </div>
+              <div class="content">
+                  <form action="{{url_for('admin.golfcard_add', name=path)}}"  method="POST">
+                        <div class="row">
+                          <div class="col-md-6">
+                              <div class="form-group">
+                                  <label>Stutt nafn golfvallar</label>
+                                  <input type="text" class="form-control border-input" name="shortname" required>
+                              </div>
+                          </div>
+                          <div class="col-md-6">
+                              <div class="form-group">
+                                  <label>Numer korts</label>
+                                  <input type="text" class="form-control border-input" name="number" required>
+                              </div>
+                          </div>
+                      </div>
+
+                      <div class="text-center">
+                          <button type="submit" class="btn btn-success btn-fill btn-wd">Uppfæra/Bæta við</button>
+                      </div>
+                      <div class="clearfix"></div>
+                  </form>
+              </div>
+
+
+              <div class="header">
+                  <h4 class="title">Eyða golfkorti</h4>
+              </div>
+              <div class="content">
+                  <form action="{{url_for('admin.golfcard_delete', name=path)}}"  method="POST">
+                    <div class="row">
+                      <div class="col-md-6">
+                          <div class="form-group">
+                              <label>Stutt nafn golfvallar</label>
+                              <input type="text" class="form-control border-input" name="shortname" required>
+                          </div>
+                      </div>
+                      <div class="col-md-6">
+                          <div class="form-group">
+                              <label>Numer korts</label>
+                              <input type="text" class="form-control border-input" name="number" required>
+                          </div>
+                      </div>
+                  </div>
+
+                      <div class="text-center">
+                          <button type="submit" class="btn btn-danger btn-fill btn-wd">Eyða</button>
+                      </div>
+                      <div class="clearfix"></div>
+                  </form>
+              </div>
+
+          </div>
+        </div>
+
+
+
+
+
+</div>
+
+
+{% endblock %}

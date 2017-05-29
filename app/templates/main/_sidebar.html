@@ -19,7 +19,7 @@ Tip 2: you can change the color of the active button using the data-active-color
             {% else %}
             <li>
             {% endif %}
-                <a href="{{url_for('index')}}">
+                <a href="{{url_for('main.index')}}">
                     <i class="fa fa-calendar-minus-o"></i>
                     <p>Golfkort</p>
                 </a>
@@ -30,7 +30,7 @@ Tip 2: you can change the color of the active button using the data-active-color
             {% else %}
             <li>
             {% endif %}
-                <a href="{{url_for('profile')}}">
+                <a href="{{url_for('main.profile')}}">
                     <i class="fa fa-user"></i>
                     <p>Notandasnið</p>
                 </a>
@@ -42,7 +42,7 @@ Tip 2: you can change the color of the active button using the data-active-color
               {% else %}
               <li>
               {% endif %}
-                  <a href="{{url_for('statistics')}}">
+                  <a href="{{url_for('main.statistics')}}">
                       <i class="fa fa-bar-chart"></i>
                       <p>Tölfræði</p>
                   </a>
@@ -50,18 +50,20 @@ Tip 2: you can change the color of the active button using the data-active-color
             {% endif %}
 
             {% if user.get_role() == 'admin' %}
+              {% if companies %}
               {% for comp in companies %}
                 {% if '/c/' in request.path and comp.name in request.path %}
                 <li class="active">
                 {% else %}
                 <li>
                 {% endif %}
-                    <a href="{{url_for('company', name=comp.name)}}">
+                    <a href="{{url_for('main.company', name=comp.name)}}">
                         <i class="fa fa-users "></i>
                         <p>{{comp.name}}</p>
                     </a>
                 </li>
               {% endfor %}
+              {% endif %}
 
             {% endif %}
 

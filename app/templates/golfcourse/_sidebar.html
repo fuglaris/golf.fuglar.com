@@ -14,7 +14,7 @@
             {% else %}
             <li>
             {% endif %}
-                <a href="{{url_for('index')}}">
+                <a href="{{url_for('main.index')}}">
                     <i class="fa fa-calendar-minus-o"></i>
                     <p>Golfkort</p>
                 </a>
@@ -32,16 +32,20 @@
         </div>
 
         <ul class="nav">
-            {% if request.path == '/' %}
-            <li class="active">
-            {% else %}
-            <li>
+            {% if companies %}
+            {% for comp in companies %}
+              {% if comp.name == current_company %}
+              <li class="active">
+              {% else %}
+              <li>
+              {% endif %}
+                  <a href="{{url_for('golfcourse.golfcourse', company=comp.name)}}">
+                      <i class="fa fa-users "></i>
+                      <p>{{comp.name}}</p>
+                  </a>
+              </li>
+            {% endfor %}
             {% endif %}
-                <a href="{{url_for('index')}}">
-                    <i class="fa fa-calendar-minus-o"></i>
-                    <p>Golfkort</p>
-                </a>
-            </li>
 
 
 

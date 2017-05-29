@@ -47,8 +47,7 @@ class Config(object):
 
 
 class ProductionConfig(Config):
-    pass
-    # DATABASE_URI = 'postgresql+psycopg2://sojheuyzpdffcl:641961e7383892e4c407266f64423ef3155e67f9956afc14967cc64b9ff28994@ec2-176-34-111-152.eu-west-1.compute.amazonaws.com:5432/dflmsqumpg8dus'
+    DATABASE_URI = 'postgresql+psycopg2://sojheuyzpdffcl:641961e7383892e4c407266f64423ef3155e67f9956afc14967cc64b9ff28994@ec2-176-34-111-152.eu-west-1.compute.amazonaws.com:5432/dflmsqumpg8dus'
 
 class DevelopmentConfig(Config):
     DATABASE_URI = 'postgresql+psycopg2://test:testtest@localhost/test'

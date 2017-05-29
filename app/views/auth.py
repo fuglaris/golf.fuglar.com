@@ -61,9 +61,9 @@ def login():
         except Exception as e:
             session.rollback()
             logg_error(location='login', error=str(e))
-            return redirect(url_for('index'))
+            return redirect(url_for('main.index'))
 
-        return redirect(url_for('index'))
+        return redirect(url_for('main.index'))
 
 
 @mod.route('/register', methods=['GET', 'POST'])
@@ -113,7 +113,7 @@ def register():
 def oauth_authorize(provider):
     """ Used to call login provider """
     if not current_user.is_anonymous:
-        return redirect(url_for('index'))
+        return redirect(url_for('main.index'))
     oauth = OAuthSignIn.get_provider(provider)
     return oauth.authorize()
 
@@ -125,33 +125,45 @@ def oauth_callback(provider):
         Allways redirects to index """
 
     if not current_user.is_anonymous:
-        return redirect(url_for('index'))
+        return redirect(url_for('main.index'))
 
     oauth = OAuthSignIn.get_provider(provider)
     id, email, name = oauth.callback()
     if email is None:
         logg_error(location='oauth_callback-{provider}'.format(provider=provider), error="No email supplied from provider, id: {id}, name: {name}".format(id=id, name=name))
-        return redirect(url_for('index'))
+        return redirect(url_for('main.index'))
 
     with SessionContext() as session:
-        oauth_user = session.query(OAuth_User)\
-                            .filter_by(email=email, provider=provider)\
-                            .first()
+
+        if provider == 'facebook':
+            oauth_user = session.query(OAuth_User)\
+                                .filter_by(provider_id=id, provider=provider)\
+                                .first()
+        else:
+            oauth_user = session.query(OAuth_User)\
+                                .filter_by(email=email, provider=provider)\
+                                .first()
+
+
+        print(oauth_user)
 
         if not oauth_user:
             try:
+                objs = list()
                 user = User(name=name,
                             password=''.join(random.choice(string.ascii_uppercase + string.digits + " ") for _ in range(100)),
                             company='',
                             email=email)
                 session.add(user)
                 session.commit()
+                objs.append(user)
                 oUser = OAuth_User(provider_id=id,
                                    user_id=user.get_id(),
                                    provider=provider,
                                    email=email)
                 session.add(oUser)
                 session.commit()
+                objs.append(oUser)
                 send_mail(id)
                 logger.oauth_register_successful(email)
 
@@ -159,6 +171,7 @@ def oauth_callback(provider):
                 access = Access(user_id=user.id, company_id=company.id)
                 session.add(access)
                 session.commit()
+                objs.append(access)
 
 
             except Exception as e:
@@ -166,18 +179,19 @@ def oauth_callback(provider):
                 session.rollback()
                 logg_error(location='oauth_callback-{provider}'.format(provider=provider), error=str(e))
                 try:
-                    session.delete(user)
-                    session.commit()
+                    for ob in objs[::-1]:
+                        session.delete(ob)
+                        session.commit()
                 except UnboundLocalError:
                     pass
-                return redirect(url_for('index'))
+                return redirect(url_for('main.index'))
         else:
             user = session.query(User).filter_by(id=oauth_user.user_id).first()
             logger.oauth_login_successful(email)
 
 
         login_user(user, remember=True)
-        return redirect(url_for('index'))
+        return redirect(url_for('main.index'))
 
 '''
 @app.route("/reauthenticate", methods=["GET", "POST"])

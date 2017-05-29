@@ -11,13 +11,14 @@ from app.models import (
 )
 
 with app.app_context():
-    app.config.from_object('config.DevelopmentConfig')
+    app.config.from_object('config.ProductionConfig')
 
 
     tmp = DB_Connection()
     tmp.create_tables()
 
     """ Import base user to database """
+    """
     with SessionContext() as session:
         try:
             user = User(
@@ -40,3 +41,4 @@ with app.app_context():
             session.commit()
         except Exception as e:
             print("Already exists")
+    """

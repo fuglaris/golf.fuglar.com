@@ -65,13 +65,59 @@ from app.util.assets import bundles
 assets = Environment(app)
 assets.register(bundles)
 
-from app.views import main
 
+
+from app.views import main
 from app.views import auth
 from app.views import api
 from app.views import admin
 from app.views import golfcourse
+app.register_blueprint(main.mod)
 app.register_blueprint(auth.mod)
 app.register_blueprint(api.mod)
 app.register_blueprint(admin.mod)
 app.register_blueprint(golfcourse.mod)
+
+
+from app.constants import BadRequestError
+
+
+@app.route('/favicon.ico')
+def favicon():
+    return url_for('static', filename='img/golf-ball.jpg')
+
+
+@app.errorhandler(404)
+def page_not_found(msg):
+    # Page not found redirect to index
+    return redirect(url_for("main.index"))
+
+
+@app.errorhandler(BadRequestError)
+def bad_request_handler(error):
+    # Bad request redirect to index
+    return redirect(url_for("main.index"))
+
+
+@app.before_request
+def before_request():
+    # Redirects user to secure https if page is requested as http
+    # If url is localhost, skip this step
+    if not 'localhost' in request.url:
+        if request.url.startswith('http://'):
+            url = request.url.replace('http://', 'https://', 1)
+            code = 301
+            return redirect(url, code=code)
+
+    # Redirect golfcourse admin users to golfcourse url.
+    if current_user.role == 3:
+        # Allow this user to access all urs that start with golfcourse prefix
+        if not request.path.startswith(golfcourse.mod.url_prefix)\
+          and not request.path.startswith('/logout')\
+          and not request.path.startswith('/static'):
+            return redirect(url_for('golfcourse.golfcourse'))
+
+
+@app.context_processor
+def utility_processor():
+    return dict(language="is", user=current_user, version='1.0.1')

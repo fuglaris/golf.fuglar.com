@@ -32,7 +32,7 @@ def golfcourse_add(name):
     with SessionContext() as session:
         company = session.query(Company).filter_by(name=name).first()
         if not company:
-            return redirect(url_for("index"))
+            return redirect(url_for("main.index"))
 
         golfcourse = session.query(GolfCourse)\
             .filter_by(shortname=request.form.get("shortname"))\
@@ -63,7 +63,7 @@ def golfcourse_delete(name):
         try:
             company = session.query(Company).filter_by(name=name).first()
             if not company:
-                return redirect(url_for("index"))
+                return redirect(url_for("main.index"))
 
             golfcourse = session.query(GolfCourse)\
                 .filter_by(shortname=request.form.get("shortname"))\
@@ -87,14 +87,14 @@ def golfcard_add(name):
         try:
             company = session.query(Company).filter_by(name=name).first()
             if not company:
-                return redirect(url_for("index"))
+                return redirect(url_for("main.index"))
 
             golfcourse = session.query(GolfCourse)\
                 .filter_by(shortname=request.form.get("shortname"))\
                 .filter_by(company_id=company.id).first()
 
             if not golfcourse:
-                return redirect(url_for("index"))
+                return redirect(url_for("main.index"))
 
             golfcard = Card(company_id=company.id, golfcourse_id=golfcourse.id, number=request.form.get("number"))
 
@@ -116,14 +116,14 @@ def golfcard_delete(name):
         try:
             company = session.query(Company).filter_by(name=name).first()
             if not company:
-                return redirect(url_for("index"))
+                return redirect(url_for("main.index"))
 
             golfcourse = session.query(GolfCourse)\
                 .filter_by(shortname=request.form.get("shortname"))\
                 .filter_by(company_id=company.id).first()
 
             if not golfcourse:
-                return redirect(url_for("index"))
+                return redirect(url_for("main.index"))
 
             golfcard = session.query(Card).filter_by(company_id=company.id)\
                 .filter_by(golfcourse_id=golfcourse.id)\
@@ -136,4 +136,4 @@ def golfcard_delete(name):
         except Exception as e:
             pass
 
-    return redirect(url_for("admin", name=name))
+    return redirect(url_for("admin.admin", name=name))

@@ -296,6 +296,24 @@ class GolfCourse(Base):
         self.company_id = company_id
 
 
+class GolfCourseCompany(Base):
+    # This table shows with companies the golfcourse has access to
+
+    __tablename__ = 'golfcoursescompanies'
+
+    id = Column(Integer, primary_key=True)
+    golfcourse_id = Column(Integer, ForeignKey('golfcourses.id'), index=True)
+    company_id = Column(Integer, ForeignKey('companies.id'), index=True)
+
+    __table_args__ = (
+        UniqueConstraint('golfcourse_id', 'company_id'),
+    )
+
+    def __init__(self, golfcourse_id, company_id):
+        self.golfcourse_id = golfcourse_id
+        self.company_id = company_id
+
+
 class Card(Base):
     __tablename__ = 'cards'
 
@@ -423,6 +441,17 @@ class QueryGolfCards(_BaseQuery):
         JOIN golfcourses gc
         ON c.golfcourse_id = gc.id
         WHERE c.company_id = :company_id
+    """
+
+class QueryCompanyGolfCards(_BaseQuery):
+
+    _Q = """
+        SELECT c.id, gc.shortname, c.number, gc.color
+        FROM cards c
+        JOIN golfcourses gc
+        ON c.golfcourse_id = gc.id
+        WHERE c.company_id = :company_id
+          AND c.golfcourse_id = :golfcourse_id
     """
 
 
