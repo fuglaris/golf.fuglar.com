@@ -56,6 +56,7 @@ td span {
 
 .card-modal {
   box-shadow: 0px 0px 0px!important;
+  border-radius: 0px;
 }
 
 .card-show ul {
@@ -64,10 +65,19 @@ td span {
     padding-left: 0px;
 
 }
+
 .card-show ul li {
 
-  border: 1px solid black;
+  border: 1px solid rgba(0, 0, 0, 0.25882352941176473);
   margin-bottom: 5px;
+  padding: 2px;
+  border-radius: 3px;
+}
+
+.btn-clean {
+  border-radius: 0px;
+  border: 0;
+  background-image: none;
 }
 
 #cards-availible .active {

@@ -507,6 +507,8 @@ class QueryAvailibleCards(_BaseQuery):
             SELECT card_id
             FROM usedcards
             WHERE date = :date)
+          AND check_card_availability(:user_id, :date)
+          AND check_golfcourse_availability(:user_id, gc.id, :date)
     """
 
 
