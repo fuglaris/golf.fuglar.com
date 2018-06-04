@@ -529,3 +529,15 @@ class QueryCardInfo(_BaseQuery):
               FROM access
               WHERE user_id = :user_id)
     """
+
+
+class QueryNumberOfGolfcourses_By_CardIds(_BaseQuery):
+
+    _Q = """
+        SELECT count(1)
+        FROM (
+            SELECT golfcourse_id
+            FROM cards
+            WHERE id  = ANY(:ids)
+            GROUP BY golfcourse_id) a
+    """

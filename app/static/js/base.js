@@ -146,6 +146,10 @@ $(document).ready(function() {
                     $("#cards-availible").append('<li id="' + allData[i]['id'] + '"' + '>' + allData[i]['shortname'] + ", kort nr. " + allData[i]['number'] + '</li>');
                 }
 
+                if (allData.length == 0) {
+                    $("#cards-availible").append("<p>Engin kort aðgengileg.</p><p>Ef þú ert þegar skráð/ur fyrir kortum, þá getur þú ekki skráð þig á annan dag fyrr en hin kortin hafa verið notuð.</p>")
+                }
+
                 document.getElementById("cardsleft-date-h4").textContent = moment(date.format()).format("Do MMM YYYY");
                 $("#cardsleft-date").val(moment(date.format()).format("YYYYMMDD"));
                 $('#cardsleft').modal('toggle');

@@ -19,7 +19,7 @@ from app.mail import send_mail
 from app.oauth import OAuthSignIn
 from app.models import (
     SessionContext, User, QueryAvailibleCards, QueryUsedCards, UsedCard, QueryCardInfo,
-    Error, Card, DeletedUsedCard, QueryGolfCourseUsedCards
+    Error, Card, DeletedUsedCard, QueryGolfCourseUsedCards, QueryNumberOfGolfcourses_By_CardIds
 )
 from app.decorators import (
     validate_json, validate_login, validate_registration, validate_provider, my_logger,
@@ -79,10 +79,17 @@ def api_use_cards():
     if not request.args.get("dateid"):
         return jsonify(dict(error="1", title="Ekki tókst að skrá kort", message="Ekkert kort valið."))
 
+    qNGC = QueryNumberOfGolfcourses_By_CardIds()
 
     with SessionContext() as session:
         try:
             dags = datetime.strptime(request.args.get("dateid"),"%Y%m%d")
+
+            data = qNGC.scalar(session=session, ids=[int(i) for i in request.args.getlist('id')])
+            
+            if data > 1:
+                return jsonify(dict(error="1", title="Ekki tókst að skrá kort", message="Ekki má velja kort frá fleirri en einum golfvelli í einu."))
+
             for i in request.args.getlist('id'):
                 mdl_card = UsedCard(user_id=current_user.id, card_id=i, date=dags)
 
@@ -91,6 +98,7 @@ def api_use_cards():
             session.commit()
 
         except Exception as e:
+            print(e)
             session.rollback()
             logg_error(location="api/usecards", error=str(e))
             return jsonify(dict(error="1", title="Ekki tókst að skrá kort", message="Villa kom upp við að skrá kort, vinsamlegst hafið samband við palmar@fuglar.com"))
