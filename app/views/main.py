@@ -20,7 +20,7 @@ from app.oauth import OAuthSignIn
 from app.models import (
     SessionContext, IntegrityError, User, Company, Access, OAuth_User, Error,
     QueryUsers, QueryErrorWarning, QueryError, QueryGolfCourses, QueryGolfCards,
-    GolfCourseAccess, GolfCourse
+    GolfCourseAccess, GolfCourse, QueryNumberOfCardsLeft
 )
 from app.decorators import (
     validate_login, validate_registration, validate_provider,
@@ -33,18 +33,23 @@ mod = Blueprint('main', __name__)
 
 @mod.context_processor
 def utility_processor():
+    qCL = QueryNumberOfCardsLeft()
+
     with SessionContext() as session:
         try:
+            cards_left = qCL.scalar(session=session, user_id=current_user.id, year='2018')
             access = session.query(Access.company_id).filter_by(user_id=current_user.id).all()
             if access:
                 companies = session.query(Company).filter(Company.id.in_([company_id for company_id in access])).all()
             else:
                 companies = None
-        except AttributeError:
+        except AttributeError as e:
             # AttributeError is catched if current_user is not defined.
+            print(str(e))
             companies = None
+            cards_left = None
 
-        return dict(companies=companies)
+        return dict(companies=companies, cards_left=cards_left)
 
 
 @mod.route('/')

@@ -120,4 +120,4 @@ def before_request():
 
 @app.context_processor
 def utility_processor():
-    return dict(language="is", user=current_user, version='1.0.1')
+    return dict(language="is", user=current_user, version='2.0.0')

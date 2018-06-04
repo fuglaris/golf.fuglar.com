@@ -213,6 +213,7 @@ $(document).ready(function() {
           eventLimit: 20, // allow "more" link when too many events
           events: data,
           lang: "is",
+          height: 1200,
           eventClick: function (calEvent, jsEvent, view) {
               $("#delete-error-message").text('');
               GetGolfCardInfo(calEvent.id)

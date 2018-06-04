@@ -541,3 +541,9 @@ class QueryNumberOfGolfcourses_By_CardIds(_BaseQuery):
             WHERE id  = ANY(:ids)
             GROUP BY golfcourse_id) a
     """
+
+class QueryNumberOfCardsLeft(_BaseQuery):
+
+    _Q = """
+        SELECT count_cards_left(:user_id, :year) cnt
+    """
