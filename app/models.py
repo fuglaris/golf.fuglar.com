@@ -125,7 +125,10 @@ class User(Base):
 
     def __init__(self, name, password, company, email, role=const.USER):
         self.name = name
-        self.displayname = name.split(" ")[0][:10]
+        if name:
+            self.displayname = name.split(" ")[0][:10]
+        else:
+            self.displayname = "---"
         self.password = argon2.generate_password_hash(password)
         self.email = email
         self.company = company
