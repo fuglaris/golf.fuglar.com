@@ -114,4 +114,4 @@ class GoogleSignIn(OAuthSignIn):
         me = oauth_session.get('').json()
         return (None,
                 me['email'],
-                me['name'])
+                None)
