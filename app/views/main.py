@@ -38,6 +38,8 @@ def utility_processor():
     with SessionContext() as session:
         try:
             cards_left = qCL.scalar(session=session, user_id=current_user.id, year='2018')
+            if cards_left < 0:
+                cards_left = 0
             access = session.query(Access.company_id).filter_by(user_id=current_user.id).all()
             if access:
                 companies = session.query(Company).filter(Company.id.in_([company_id for company_id in access])).all()
