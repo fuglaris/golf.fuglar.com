@@ -12,14 +12,20 @@
           <div class="row">
               <div class="col-xs-12 col-md-offset-3 col-md-6">
                   <div class="text-center card-show">
-                      {% if cards_left > 0 %}
-                      <ul id="cards-availible"></ul>
-                      {% else %}
-                      <ul>
-                        <p>Engin kort aðgengileg.</p>
-                        <p>Þú ert komin(n) yfir hámarksfjölda leyfilegra skráninga ársins og getur því ekki skráð kort fram í tímann. Þú getur þó enn tekið frá kort á líðandi degi. Gleðilegt golfsumar.</p>
+
+                      <ul id="cards-availible">
+
                       </ul>
-                      {% endif %}
+                      <ul id="cards-notavailible" style="display: none;">
+                        {% if cards_left > 0 %}
+                          <p>Engin kort aðgengileg.</p>
+                          <p>Ef þú ert þegar skráð/ur fyrir kortum, þá getur þú ekki skráð þig á annan dag fyrr en hin kortin hafa verið notuð.</p>
+                          <p>Þú getur þó alltaf tekið frá kort á líðandi degi.</p>
+                        {% else %}
+                          <p>Engin kort aðgengileg.</p>
+                          <p>Þú ert komin(n) yfir hámarksfjölda leyfilegra skráninga ársins og getur því ekki skráð kort fram í tímann. Þú getur þó enn tekið frá kort á líðandi degi. Gleðilegt golfsumar.</p>
+                        {% endif %}
+                      </ul>
                   </div>
               </div>
           </div>

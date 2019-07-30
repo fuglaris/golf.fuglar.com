@@ -135,6 +135,7 @@ $(document).ready(function() {
       };
 
     function GetAvailableGolfCards(date) {
+        $("#cards-notavailible").hide();
         $.ajax({
             url: '/api/availiblecards?dateid='+moment(date.format()).format("YYYYMMDD"),
             type: 'GET',
@@ -147,7 +148,7 @@ $(document).ready(function() {
                 }
 
                 if (allData.length == 0) {
-                    $("#cards-availible").append("<p>Engin kort aðgengileg.</p><p>Ef þú ert þegar skráð/ur fyrir kortum, þá getur þú ekki skráð þig á annan dag fyrr en hin kortin hafa verið notuð.</p>")
+                    $("#cards-notavailible").show();
                 }
 
                 document.getElementById("cardsleft-date-h4").textContent = moment(date.format()).format("Do MMM YYYY");
