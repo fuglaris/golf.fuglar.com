@@ -47,7 +47,6 @@ class Config(object):
 
 
 class ProductionConfig(Config):
-    #DATABASE_URI = 'postgresql://golfuser:golfuser@136.243.111.104:5427/golf'
     DATABASE_URI = 'postgresql+psycopg2://sucufvwoyqhjou:494ef44cf2cfe52f5c58ed2460049c67be8c73779cb1a92f460e27f45f7c9543@ec2-54-247-79-178.eu-west-1.compute.amazonaws.com:5432/d49cjvdpjfeiu7'
 
 class DevelopmentConfig(Config):
