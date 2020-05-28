@@ -7,7 +7,7 @@ from datetime import datetime, date
 from sqlalchemy import exc
 
 from flask import (
-    render_template, request, redirect, url_for, Blueprint
+    render_template, request, redirect, url_for, Blueprint, session as flask_session
 )
 from flask_login import (
     login_user, logout_user, current_user, login_required, fresh_login_required
@@ -102,6 +102,9 @@ def statistics():
 @requires_roles('admin')
 def company(name):
     with SessionContext() as session:
+
+        flask_session['url_admin_page'] = url_for(request.endpoint, name=name)
+
         company = session.query(Company).filter_by(name=name).first()
         access = session.query(Access).filter_by(user_id=current_user.id)\
             .filter_by(company_id=company.id).first()

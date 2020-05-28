@@ -3,11 +3,11 @@ import random
 import string
 
 from datetime import datetime, date
-from app import app
+from app import app, login_manager
 from sqlalchemy import exc
 
 from flask import (
-    render_template, request, redirect, url_for, Blueprint
+    render_template, request, redirect, url_for, Blueprint, flash
 )
 from flask_login import (
     login_user, logout_user, current_user, login_required, fresh_login_required
@@ -214,6 +214,41 @@ def reauth():
 def logout():
     logout_user()
     return redirect(url_for('auth.login'))
+
+
+
+@mod.route('/change_password', methods=['POST'])
+@login_manager.needs_refresh_handler
+def change_password():
+
+
+    pw = request.form['pw']
+    pw1 = request.form['pw1']
+    pw2 = request.form['pw2']
+
+    if pw1 != pw2:
+        flash("Ný lykilorð passa ekki")
+        return redirect(url_for('main.profile'))
+
+
+    with SessionContext() as session:
+        user = session.query(User)\
+            .filter_by(id = current_user.id)\
+            .first()
+
+        if not user.check_password(pw):
+            flash("Rangt lykilorð")
+            return redirect(url_for('main.profile'))
+
+
+        user.update_password(pw1)
+        session.add(user)
+        session.commit()  
+
+        return redirect(url_for('main.index'))
+
+
+
 
 
 """ REMEMBER

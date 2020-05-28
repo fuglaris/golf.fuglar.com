@@ -122,6 +122,7 @@ class User(Base):
     company = Column(String)
     role = Column(Integer)
     registered_on = Column(DateTime)
+    max_cards = Column(Integer)
 
     def __init__(self, name, password, company, email, role=const.USER):
         self.name = name
@@ -134,6 +135,7 @@ class User(Base):
         self.company = company
         self.role = role
         self.registered_on = datetime.utcnow()
+        self.max_cards = 30
 
     def check_password(self, password):
         try:
@@ -141,6 +143,9 @@ class User(Base):
         except Exception as e:
             print(e)
             return False
+
+    def update_password(self, password):
+        self.password = argon2.generate_password_hash(password)
 
     def is_authenticated(self):
         return True
@@ -402,7 +407,7 @@ class QueryUnseenMessages(_BaseQuery):
 class QueryUsers(_BaseQuery):
 
     _Q = """
-        SELECT u.id, u.email, c.name as company, u.role
+        SELECT u.id, u.name, u.email, c.name as company, u.role, count_cards_left(u.id, '2020') as cards_left, max_cards
         FROM users u
         LEFT OUTER JOIN access a
         ON a.user_id = u.id

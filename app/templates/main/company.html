@@ -31,6 +31,7 @@
                 </table>
 
             </div>
+        </div>
             <!--
             <div class="header">
                 <h4 class="title">Bæta við golfvelli</h4>
@@ -90,7 +91,6 @@
                 </form>
             </div>
             -->
-        </div>
       </div>
 
 
@@ -192,36 +192,35 @@
         <div class="col-md-6">
               <div class="card">
                   <div class="header">
-                      <h4 class="title">User access table</h4>
-                      <p class="category">Table shows what users have access to admin and statistic pages</p>
+                      <h4 class="title">Listi yfir alla notendur</h4>
                   </div>
                   <div class="content table-responsive table-full-width">
                       <table class="table table-striped">
                           <thead>
                               <tr>
-                                  <th>ID</th>
-                                	<th>Email/provider_id</th>
-                                	<th>Access</th>
-                                	<th>Statistics</th>
-                                	<th>Admin</th>
+                                    <th>Einkvæmur lykill</th>
+                                    <th>Nafn</th>
+                                    <th>Netfang/provider_id</th>
+                                	<th>Stjórnandi</th>
+                                	<th>Aðangur</th>
+                                	<th>Kort eftir</th>
+                                	<th>Hámarks fjöldi korta</th>
                               </tr>
                           </thead>
                           <tbody>
                               {% for u in users %}
                               <tr>
                                 <td>{{u.id}}</td>
+                                <td>{{u.name}}</td>
                                 <td>{{u.email}}</td>
                                 <td>{{u.company}}</td>
-                                {% if u.role in (1, 0) %}
-                                  <td>x</td>
-                                {% else %}
-                                  <td></td>
-                                {% endif %}
                                 {% if u.role == 0 %}
                                   <td>x</td>
                                 {% else %}
                                   <td></td>
                                 {% endif %}
+                                <td>{{u.cards_left}}</td>
+                                <td>{{u.max_cards}}</td>
 
                               </tr>
                               {% endfor %}
@@ -235,8 +234,81 @@
 
 
 
+    <div class="col-md-3">
+        <div class="card">
+            <div class="header">
+                <h4 class="title">Endursetja lykiorð hjá notanda</h4>
+            </div>
+            <div class="content">
+                <form action="{{url_for('admin.reset_password')}}" method="POST">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Einkvæmur lykill notanda</label>
+                                <input type="text" class="form-control border-input" name="user_id">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Nafn</label>
+                                <input type="text" class="form-control border-input" name="name">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Netfang</label>
+                                <input type="text" class="form-control border-input" name="email">
+                            </div>
+                        </div>
+                    </div>
+            
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-info btn-fill btn-wd">Endursetja lykilorð</button>
+                    </div>
+                    <div class="clearfix"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card">
+            <div class="header">
+                <h4 class="title">Breyta hámarksfjölda korta hjá notanda</h4>
+            </div>
+            <div class="content">
+                <form action="{{url_for('admin.update_card_count')}}" method="POST">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Notanda lykill</label>
+                                <input type="text" class="form-control border-input" name="user_id">
+                            </div>
+                        </div>
+                    </div>
+            
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Fjöldi korta</label>
+                                <input type="number" class="form-control border-input" name="count">
+                            </div>
+                        </div>
+                    </div>
 
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-info btn-fill btn-wd">Breyta fjölda korta</button>
+                    </div>
+                    <div class="clearfix"></div>
+                </form>
+            </div>
+        </div>
+    </div>
 
+    <!--
     <div class="col-md-6">
           <div class="card">
               <div class="header">
@@ -300,6 +372,7 @@
                 </div>
             </div>
         </div>
+    -->
 
 
 

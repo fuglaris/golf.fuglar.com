@@ -36,19 +36,6 @@ Tip 2: you can change the color of the active button using the data-active-color
                 </a>
             </li>
 
-            {% if user.get_role() in ('admin', 'staff') %}
-              {% if request.path == '/statistics' %}
-              <li class="active">
-              {% else %}
-              <li>
-              {% endif %}
-                  <a href="{{url_for('main.statistics')}}">
-                      <i class="fa fa-bar-chart"></i>
-                      <p>Tölfræði</p>
-                  </a>
-              </li>
-            {% endif %}
-
             {% if user.get_role() == 'admin' %}
               {% if companies %}
               {% for comp in companies %}

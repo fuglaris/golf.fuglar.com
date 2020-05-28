@@ -7,7 +7,7 @@ from app import app
 from sqlalchemy import exc
 
 from flask import (
-    render_template, request, redirect, url_for, json, Blueprint
+    render_template, request, redirect, url_for, json, Blueprint, session as flask_session
 )
 from flask_login import (
     current_user, login_required
@@ -20,6 +20,12 @@ from app.models import (
     QueryUsers, Error,
     QueryError, QueryErrorWarning, GolfCourse, QueryGolfCourses, Card, QueryGolfCards
 )
+
+
+def get_random_alphaNumeric_string(stringLength=8):
+    lettersAndDigits = string.ascii_letters + string.digits
+    return ''.join((random.choice(lettersAndDigits) for i in range(stringLength)))
+
 
 
 mod = Blueprint('admin', __name__, url_prefix='/admin')
@@ -137,3 +143,70 @@ def golfcard_delete(name):
             pass
 
     return redirect(url_for("admin.admin", name=name))
+
+
+
+
+@mod.route("/reset_password", methods=["POST"])
+@login_required
+@requires_roles('admin')
+def reset_password():
+
+    user_id = request.form["user_id"]
+    name = request.form["name"]
+    email = request.form["email"]
+
+    with SessionContext() as session:
+
+        try:
+            user = session.query(User)\
+                .filter_by(id = user_id)\
+                .filter_by(name = name)\
+                .filter_by(email = email)\
+                .first()
+        except Exception:
+            user = None
+
+        if not user:
+            return render_template("main/admin/password_reset.html", error="Notandi finnst ekki.", cards_left = 0)
+
+        oauth = session.query(OAuth_User)\
+            .filter_by(user_id = user.id)\
+            .first()
+
+        if oauth:
+            return render_template("main/admin/password_reset.html", error="Notandi er skráður inn með facebook eða google.", cards_left = 0)
+
+
+        password = get_random_alphaNumeric_string(40)
+        user.update_password(password)
+        session.add(user)
+        session.commit()
+
+        return render_template("main/admin/password_reset.html", user_id = user_id, name = name, email = email, password = password, cards_left = 0)
+
+
+
+
+@mod.route("/update_card_count", methods=["POST"])
+@login_required
+@requires_roles('admin')
+def update_card_count():
+
+    user_id = request.form["user_id"]
+    count = request.form["count"]
+
+    with SessionContext() as session:
+
+        try:
+            user = session.query(User)\
+                .filter_by(id = user_id)\
+                .first()
+
+            user.max_cards = int(count)
+            session.add(user)
+            session.commit()
+        except Exception as e:
+            print(str(e))
+
+    return redirect(flask_session['url_admin_page'])

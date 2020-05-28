@@ -13,8 +13,7 @@
           </div>
           <div class="field">
               {% if status == "wrong_password" %}
-                  <input class="error-window" type="password" required="" name="password" id="password" placeholder="Lykilorð">
-                  <p class="error-message"> lykilorðið er rangt </p>
+                  <input type="password" required="" name="password" id="password" placeholder="lykilorðið er rangt " style="border: solid 1px #be4d36;">
               {% else %}
                   <input type="password" required="" name="password" id="password" placeholder="Lykilorð">
               {% endif %}
@@ -48,8 +47,7 @@
 
           <div class="field">
               {% if status == "wrong_password" %}
-                  <input type="password" required="" name="password" id="password" placeholder="Password">
-                  <p class="error-message"> Password was incorrect </p>
+                  <input type="password" required="" name="password" id="password" placeholder="Password was incorrect" style="border: solid 1px #be4d36;">
               {% else %}
                   <input type="password" required="" name="password" id="password" placeholder="Password">
               {% endif %}
