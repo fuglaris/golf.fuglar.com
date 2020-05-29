@@ -21,6 +21,9 @@
 
     <div class="col-lg-6 col-sm-6">
         <div class="card">
+            <div class="header">
+                <h4 class="title">Notkun korta eftir notendum</h4>
+            </div>
             <div class="content">
                 <div class="row">
                     <div class="col-xs-12">
@@ -41,6 +44,10 @@
         $(document).ready(function () {
 
                 bardata = {{ cardsused|safe }} ;
+                userUsage = {{ cardsused_byuser|safe }} ;
+
+                console.log(userUsage);
+
 
                 var ctx = document.getElementById('usageChart').getContext('2d');
                 var chart = new Chart(ctx, {
@@ -64,6 +71,44 @@
                             yAxes: [{
                                 ticks: {
                                     beginAtZero: true
+                                }
+                            }]
+                        }
+                    }
+                });
+
+
+                var uctx = document.getElementById('userUsageChart').getContext('2d');
+                var chartUser = new Chart(uctx, {
+                    // The type of chart we want to create
+                    type: 'bar',
+
+                    // The data for our dataset
+                    data: {
+                        labels: userUsage[0].names,
+                        datasets: userUsage.map(item => ({
+                            label: item.golfcourse_name,
+                            backgroundColor: item.color,
+                            borderColor: item.color,
+                            data: item.totals
+                        })) 
+                    },
+
+                    // Configuration options go here
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                stacked: true,
+                                ticks: {
+                                    beginAtZero: true
+                                }
+                            }],
+                            xAxes: [{
+                                stacked: true,
+                                ticks: {
+                                    beginAtZero: true,
+                                    maxRotation: 60,
+                                    minRotation: 60
                                 }
                             }]
                         }

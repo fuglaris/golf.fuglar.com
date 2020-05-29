@@ -572,3 +572,33 @@ class QueryStatisticsCardsUsed(_BaseQuery):
             ) a
         GROUP BY 1,2
     """
+
+class QueryStatisticsCardsUsedByUser(_BaseQuery):
+
+    _Q = """
+        WITH all_cards as (
+            SELECT u.id as user_id,
+                u.name as user_name,
+                gc.name as golfcourse_name,
+                gc.color,
+                coalesce(ucc.total, 0) as total,
+                sum(coalesce(ucc.total, 0)) over (partition by u.id) as user_total
+            FROM golfcourses gc
+                    CROSS JOIN users u
+                    LEFT JOIN (
+                SELECT uc.user_id, c.golfcourse_id, count(1) as total
+                FROM usedcards uc
+                        JOIN cards c on uc.card_id = c.id
+                where date_trunc('year', uc.date) = date_trunc('year', now())
+                GROUP BY 1, 2
+            ) ucc
+                            ON gc.id = ucc.golfcourse_id
+                                AND u.id = ucc.user_id
+        )
+        SELECT golfcourse_name, color,
+            array_agg(total) AS totals,
+            array_agg(user_name) as names
+        FROM (select * from all_cards order by user_total) a
+        WHERE user_total > 0
+        group by 1,2
+    """

@@ -21,7 +21,8 @@ from app.oauth import OAuthSignIn
 from app.models import (
     SessionContext, IntegrityError, User, Company, Access, OAuth_User, Error,
     QueryUsers, QueryErrorWarning, QueryError, QueryGolfCourses, QueryGolfCards,
-    GolfCourseAccess, GolfCourse, QueryNumberOfCardsLeft, QueryStatisticsCardsUsed
+    GolfCourseAccess, GolfCourse, QueryNumberOfCardsLeft, 
+    QueryStatisticsCardsUsed, QueryStatisticsCardsUsedByUser
 )
 from app.decorators import (
     validate_login, validate_registration, validate_provider,
@@ -99,11 +100,13 @@ def statistics():
     with SessionContext() as session:
 
         qSCU = QueryStatisticsCardsUsed()
+        qSCUbU = QueryStatisticsCardsUsedByUser()
 
         cardsused = [{ 'shortname': _[0], 'color': _[1], 'months': _[2], 'totals': _[3]} for _ in qSCU.execute(session=session)]
+        cardsused_byuser = [{ 'golfcourse_name': _[0], 'color': _[1], 'totals': _[2], 'names': _[3]} for _ in qSCUbU.execute(session=session)]
 
 
-        return render_template("main/statistics.html", cardsused = json.dumps(cardsused))
+        return render_template("main/statistics.html", cardsused = json.dumps(cardsused), cardsused_byuser = json.dumps(cardsused_byuser))
 
 
 @mod.route('/c/<name>')
