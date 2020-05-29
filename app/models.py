@@ -561,15 +561,19 @@ class QueryNumberOfCardsLeft(_BaseQuery):
 class QueryStatisticsCardsUsed(_BaseQuery):
 
     _Q = """
-        SELECT a.shortname, a.color, array_agg(month) months, array_agg(total) totals
-        FROM (
-                select to_char(date, 'Mon') as month, shortname, color, count(1)  as total
-                from usedcards uc
-                        join cards c on uc.card_id = c.id
-                        join golfcourses g on c.golfcourse_id = g.id
-                where date_trunc('year', uc.date) = date_trunc('year', now())
-                group by 1, 2, 3
-            ) a
+        select g.shortname, g.color, array_agg(to_char(d.date, 'Mon') ORDER BY d.date) months, array_agg(coalesce(total, 0) ORDER BY d.date) totals
+        from golfcourses g
+        cross join generate_series(date_trunc('year', :date) + interval '4 month', date_trunc('year', :date) + interval '9 months', '1 month') as d(date)
+        left join (
+            select date_trunc('month', date) as date, g.id as golfcourse_id, count(1) as total
+            from usedcards uc
+            join cards c on uc.card_id = c.id
+            join golfcourses g on c.golfcourse_id = g.id
+            where date_trunc('year', uc.date) = date_trunc('year', :date)
+            group by 1, 2
+        ) data
+        on g.id = data.golfcourse_id
+        and d.date = data.date
         GROUP BY 1,2
     """
 
@@ -584,21 +588,21 @@ class QueryStatisticsCardsUsedByUser(_BaseQuery):
                 coalesce(ucc.total, 0) as total,
                 sum(coalesce(ucc.total, 0)) over (partition by u.id) as user_total
             FROM golfcourses gc
-                    CROSS JOIN users u
-                    LEFT JOIN (
+            CROSS JOIN users u
+            LEFT JOIN (
                 SELECT uc.user_id, c.golfcourse_id, count(1) as total
                 FROM usedcards uc
                         JOIN cards c on uc.card_id = c.id
-                where date_trunc('year', uc.date) = date_trunc('year', now())
+                WHERE date_trunc('year', uc.date) = date_trunc('year', :date) 
                 GROUP BY 1, 2
             ) ucc
-                            ON gc.id = ucc.golfcourse_id
-                                AND u.id = ucc.user_id
+            ON gc.id = ucc.golfcourse_id
+            AND u.id = ucc.user_id
         )
         SELECT golfcourse_name, color,
-            array_agg(total) AS totals,
-            array_agg(user_name) as names
+            array_agg(total ORDER BY user_total) AS totals,
+            array_agg(user_name ORDER BY user_total) as names
         FROM (select * from all_cards order by user_total) a
         WHERE user_total > 0
-        group by 1,2
+        GROUP BY 1,2
     """

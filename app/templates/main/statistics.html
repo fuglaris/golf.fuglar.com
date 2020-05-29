@@ -1,6 +1,45 @@
 {% extends "main/_base.html" %}
 {% block main %}
+<div class="row">
 
+    <div class="col-lg-3 col-sm-6">
+        <div class="card">
+            <div class="header">
+                <h4 class="title">Árið {{year}} er valið</h4>
+            </div>
+
+            <div class="content">
+
+                <form action="{{url_for('main.statistics')}}" method="GET">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Veldu annað ár</label>
+                                <select name="year">
+                                    <option value="2016" {% if year=='2016' %} selected="selected" {% endif %}>2016
+                                    </option>
+                                    <option value="2017" {% if year=='2017' %} selected="selected" {% endif %}>2017
+                                    </option>
+                                    <option value="2018" {% if year=='2018' %} selected="selected" {% endif %}>2018
+                                    </option>
+                                    <option value="2019" {% if year=='2019' %} selected="selected" {% endif %}>2019
+                                    </option>
+                                    <option value="2020" {% if year=='2020' %} selected="selected" {% endif %}>2020
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-info btn-fill btn-wd btn-clean">Sækja</button>
+                    </div>
+                    <div class="clearfix"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="row">
 
     <div class="col-lg-6 col-sm-6">

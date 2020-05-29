@@ -99,14 +99,18 @@ def statistics():
 
     with SessionContext() as session:
 
+        year = request.args.get('year', date.today().year)
+
+        today = date(int(year), 1, 1)
+
         qSCU = QueryStatisticsCardsUsed()
         qSCUbU = QueryStatisticsCardsUsedByUser()
 
-        cardsused = [{ 'shortname': _[0], 'color': _[1], 'months': _[2], 'totals': _[3]} for _ in qSCU.execute(session=session)]
-        cardsused_byuser = [{ 'golfcourse_name': _[0], 'color': _[1], 'totals': _[2], 'names': _[3]} for _ in qSCUbU.execute(session=session)]
+        cardsused = [{ 'shortname': _[0], 'color': _[1], 'months': _[2], 'totals': _[3]} for _ in qSCU.execute(session=session, date=today)]
+        cardsused_byuser = [{ 'golfcourse_name': _[0], 'color': _[1], 'totals': _[2], 'names': _[3]} for _ in qSCUbU.execute(session=session, date=today)]
 
 
-        return render_template("main/statistics.html", cardsused = json.dumps(cardsused), cardsused_byuser = json.dumps(cardsused_byuser))
+        return render_template("main/statistics.html", cardsused = json.dumps(cardsused), cardsused_byuser = json.dumps(cardsused_byuser), year = year)
 
 
 @mod.route('/c/<name>')
