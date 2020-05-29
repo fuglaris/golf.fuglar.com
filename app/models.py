@@ -555,3 +555,20 @@ class QueryNumberOfCardsLeft(_BaseQuery):
     _Q = """
         SELECT count_cards_left(:user_id, :year) cnt
     """
+
+
+
+class QueryStatisticsCardsUsed(_BaseQuery):
+
+    _Q = """
+        SELECT a.shortname, a.color, array_agg(month) months, array_agg(total) totals
+        FROM (
+                select to_char(date, 'Mon') as month, shortname, color, count(1)  as total
+                from usedcards uc
+                        join cards c on uc.card_id = c.id
+                        join golfcourses g on c.golfcourse_id = g.id
+                where date_trunc('year', uc.date) = date_trunc('year', now())
+                group by 1, 2, 3
+            ) a
+        GROUP BY 1,2
+    """

@@ -80,6 +80,10 @@ td span {
   background-image: none;
 }
 
+.input-clean {
+  border-radius: 0px;
+}
+
 #cards-availible .active {
   background: #e5ffe5;
 }

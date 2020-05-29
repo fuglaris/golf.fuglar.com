@@ -1,6 +1,7 @@
 import os
 import random
 import string
+import json
 
 from datetime import datetime, date
 
@@ -20,7 +21,7 @@ from app.oauth import OAuthSignIn
 from app.models import (
     SessionContext, IntegrityError, User, Company, Access, OAuth_User, Error,
     QueryUsers, QueryErrorWarning, QueryError, QueryGolfCourses, QueryGolfCards,
-    GolfCourseAccess, GolfCourse, QueryNumberOfCardsLeft
+    GolfCourseAccess, GolfCourse, QueryNumberOfCardsLeft, QueryStatisticsCardsUsed
 )
 from app.decorators import (
     validate_login, validate_registration, validate_provider,
@@ -94,7 +95,15 @@ def profile():
 @login_required
 @requires_roles('admin', 'staff')
 def statistics():
-    return render_template("main/statistics.html")
+
+    with SessionContext() as session:
+
+        qSCU = QueryStatisticsCardsUsed()
+
+        cardsused = [{ 'shortname': _[0], 'color': _[1], 'months': _[2], 'totals': _[3]} for _ in qSCU.execute(session=session)]
+
+
+        return render_template("main/statistics.html", cardsused = json.dumps(cardsused))
 
 
 @mod.route('/c/<name>')
@@ -118,10 +127,10 @@ def company(name):
         qGC = QueryGolfCourses()
         qGCa = QueryGolfCards()
 
-    return render_template("main/company.html",
-        users=qU.execute(session=session),
-        errorswarning=qEW.execute(session=session),
-        errors=qE.execute(session=session),
-        golfcourses=qGC.execute(session=session, company_id=company.id),
-        golfcards=qGCa.execute(session=session, company_id=company.id),
-        path=name)
+        return render_template("main/company.html",
+            users=qU.execute(session=session),
+            errorswarning=qEW.execute(session=session),
+            errors=qE.execute(session=session),
+            golfcourses=qGC.execute(session=session, company_id=company.id),
+            golfcards=qGCa.execute(session=session, company_id=company.id),
+            path=name)

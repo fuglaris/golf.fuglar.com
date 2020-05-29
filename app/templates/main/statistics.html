@@ -2,55 +2,74 @@
 {% block main %}
 
 <div class="row">
+
+    <div class="col-lg-6 col-sm-6">
+        <div class="card">
+            <div class="header">
+                <h4 class="title">Notkun korta eftir mánuði</h4>
+            </div>
+
+            <div class="content">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <canvas id="usageChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="col-lg-6 col-sm-6">
         <div class="card">
             <div class="content">
                 <div class="row">
                     <div class="col-xs-12">
-                        <div class="ct-chart"></div>
-                    </div>
-                </div>
-                <div class="footer">
-                    <hr />
-                    <div class="stats">
-                        <i class="ti-reload"></i> Updated now
+                        <canvas id="userUsageChart"></canvas>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="col-lg-6 col-sm-6">
-        <div class="card">
-            <div class="content">
-                <div class="row">
-                    <div class="col-xs-5">
-                        <div class="icon-big icon-danger text-center">
-                            <i class="ti-pulse"></i>
-                        </div>
-                    </div>
-                    <div class="col-xs-7">
-                        <div class="numbers">
-                            <p>Errors</p>
-                            23
-                        </div>
-                    </div>
-                </div>
-                <div class="footer">
-                    <hr />
-                    <div class="stats">
-                        <i class="ti-timer"></i> In the last hour
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+
 </div>
 
 
 {% endblock %}
 
 {% block head_js %}
-  {% assets "stat_js" %}
-      <script type="text/javascript" src="{{ ASSET_URL }}"></script>
-  {% endassets %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+                bardata = {{ cardsused|safe }} ;
+
+                var ctx = document.getElementById('usageChart').getContext('2d');
+                var chart = new Chart(ctx, {
+                    // The type of chart we want to create
+                    type: 'bar',
+
+                    // The data for our dataset
+                    data: {
+                        labels: ['May', 'June', 'July', 'August', 'September'],
+                        datasets: bardata.map(item => ({
+                            label: item.shortname,
+                            backgroundColor: item.color,
+                            borderColor: item.color,
+                            data: item.totals
+                        })) 
+                    },
+
+                    // Configuration options go here
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true
+                                }
+                            }]
+                        }
+                    }
+                });
+    });
+
+    </script>
 {% endblock %}

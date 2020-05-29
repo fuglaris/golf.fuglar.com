@@ -4,7 +4,7 @@
 <div>
     <div class="row">
 
-        <div class="col-lg-6 col-md-8">
+        <div class="col-lg-3 col-md-6">
             <div class="card">
                 <div class="header">
                     <h4 class="title">Upplýsingar um notanda</h4>
@@ -12,26 +12,28 @@
                 <div class="content">
                     <form action="{{url_for('main.profile')}}" method="POST">
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-12">
                                 <div class="form-group">
                                     <label>Fyrirtæki <span class="profile-info">(nafn á fyrirtækinu sem þú vinnur
                                             hjá)</span></label>
-                                    <input type="text" class="form-control border-input" name="company"
+                                    <input type="text" class="form-control border-input input-clean" name="company"
                                         placeholder="Company" value="{{user.company}}">
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
                                 <div class="form-group">
                                     <label>Stutt nafn <span class="profile-info">(nafn sem sést á golfkorti, hámark 10
                                             stafir)</span></label>
-                                    <input type="text" class="form-control border-input" name="displayname"
+                                    <input type="text" class="form-control border-input input-clean" name="displayname"
                                         placeholder="Display name" value="{{user.displayname}}">
                                 </div>
                             </div>
                         </div>
 
                         <div class="text-center">
-                            <button type="submit" class="btn btn-info btn-fill btn-wd">Uppfæra upplýsingar</button>
+                            <button type="submit" class="btn btn-success btn-fill btn-wd btn-clean">Uppfæra upplýsingar</button>
                         </div>
                         <div class="clearfix"></div>
                     </form>
@@ -39,10 +41,8 @@
 
             </div>
         </div>
-    </div>
-    <div class="row">
 
-        <div class="col-lg-6 col-md-8">
+        <div class="col-lg-3 col-md-6">
             <div class="card">
                 <div class="header">
                     <h4 class="title">Skipta um lykilorð</h4>
@@ -61,32 +61,32 @@
                 <div class="content">
                     <form action="{{url_for('auth.change_password')}}" method="POST">
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-12">
                                 <div class="form-group">
                                     <label>Núverandi lykilorð </label>
-                                    <input type="text" class="form-control border-input" name="pw" type="password">
+                                    <input class="form-control border-input input-clean" name="pw" type="password">
                                 </div>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-12">
                                 <div class="form-group">
                                     <label>Nýtt lykilorð</label>
-                                    <input type="text" class="form-control border-input" name="pw1" type="password">
+                                    <input class="form-control border-input input-clean" name="pw1" type="password">
                                 </div>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-12">
                                 <div class="form-group">
                                     <label>Nýtt lykilorð aftur</label>
-                                    <input type="text" class="form-control border-input" name="pw2" type="password">
+                                    <input class="form-control border-input input-clean" name="pw2" type="password">
                                 </div>
                             </div>
                         </div>
 
                         <div class="text-center">
-                            <button type="submit" class="btn btn-info btn-fill btn-wd">Uppfæra lykilorð</button>
+                            <button type="submit" class="btn btn-info btn-fill btn-wd btn-clean">Uppfæra lykilorð</button>
                         </div>
                         <div class="clearfix"></div>
                     </form>

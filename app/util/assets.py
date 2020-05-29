@@ -26,7 +26,7 @@ bundles = {
 		'vendor/js/moment.min.js',
 		'vendor/js/fullcalendar.js',
 		'vendor/js/locale-all.js',
-		'vendor/js/chartist.min.js',
+		'vendor/js/chartjs.js',
 		output='gen/main_js.js',
         filters='jsmin'),
 
@@ -37,7 +37,6 @@ bundles = {
 		'vendor/css/paper-dashboard.css',
 		'vendor/css/font-awesome.min.css',
 		'vendor/css/fullcalendar.css',
-		'vendor/css/chartist.min.css',
 		'css/main.css',
 		'vendor/css/flag-icon.css',
 		output='gen/main_css.css',
