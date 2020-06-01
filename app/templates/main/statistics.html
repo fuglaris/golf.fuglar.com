@@ -39,6 +39,8 @@
             </div>
         </div>
     </div>
+
+    
 </div>
 <div class="row">
 
@@ -84,9 +86,6 @@
 
                 bardata = {{ cardsused|safe }} ;
                 userUsage = {{ cardsused_byuser|safe }} ;
-
-                console.log(userUsage);
-
 
                 var ctx = document.getElementById('usageChart').getContext('2d');
                 var chart = new Chart(ctx, {

@@ -593,15 +593,15 @@ class QueryStatisticsCardsUsedByUser(_BaseQuery):
                 SELECT uc.user_id, c.golfcourse_id, count(1) as total
                 FROM usedcards uc
                         JOIN cards c on uc.card_id = c.id
-                WHERE date_trunc('year', uc.date) = date_trunc('year', :date) 
+                WHERE date_trunc('year', uc.date) = date_trunc('year', :date)
                 GROUP BY 1, 2
             ) ucc
             ON gc.id = ucc.golfcourse_id
             AND u.id = ucc.user_id
         )
         SELECT golfcourse_name, color,
-            array_agg(total ORDER BY user_total) AS totals,
-            array_agg(user_name ORDER BY user_total) as names
+            array_agg(total ORDER BY user_total, user_name) AS totals,
+            array_agg(user_name ORDER BY user_total, user_name) as names
         FROM (select * from all_cards order by user_total) a
         WHERE user_total > 0
         GROUP BY 1,2
