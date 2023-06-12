@@ -31,8 +31,8 @@ class Config(object):
            'secret': '6567bb17586249896670965cc7e40053'
        },
        'google': {
-           'id': '553790731870-1f3giabgt6q93eqi3hf3ssmh8ckrf62e.apps.googleusercontent.com',
-           'secret': 'OitS-AwC8Bg9LjSfcdDtbRsG'
+           'id': '4219908234-ktvfr0ojp5j3gan8tk09cfbh8c4kvgj1.apps.googleusercontent.com',
+           'secret': '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'
        },
        'microsoft': {
            'id': '',
