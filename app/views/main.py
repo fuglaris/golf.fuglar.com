@@ -42,9 +42,10 @@ def utility_processor():
             cards_left = qCL.scalar(session=session, user_id=current_user.id, year='2018')
             if cards_left < 0:
                 cards_left = 0
-            access = session.query(Access.company_id).filter_by(user_id=current_user.id).all()
+            access = session.query(Access).filter_by(user_id=current_user.id).all()
+
             if access:
-                companies = session.query(Company).filter(Company.id.in_([company_id for company_id in access])).all()
+                companies = session.query(Company).filter(Company.id.in_([a.company_id for a in access])).all()
             else:
                 companies = None
         except AttributeError as e:
@@ -106,8 +107,8 @@ def statistics():
         qSCU = QueryStatisticsCardsUsed()
         qSCUbU = QueryStatisticsCardsUsedByUser()
 
-        cardsused = [{ 'shortname': _[0], 'color': _[1], 'months': _[2], 'totals': _[3]} for _ in qSCU.execute(session=session, date=today)]
-        cardsused_byuser = [{ 'golfcourse_name': _[0], 'color': _[1], 'totals': _[2], 'names': _[3]} for _ in qSCUbU.execute(session=session, date=today)]
+        cardsused = [_ for _ in qSCU.execute(session=session, date=today)]
+        cardsused_byuser = [_ for _ in qSCUbU.execute(session=session, date=today)]
 
 
         return render_template("main/statistics.html", cardsused = json.dumps(cardsused), cardsused_byuser = json.dumps(cardsused_byuser), year = year)

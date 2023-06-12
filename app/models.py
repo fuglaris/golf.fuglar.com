@@ -45,7 +45,8 @@ class DB_Connection:
         # conn_str = 'postgresql+psycopg2://user:password@hostname/database_name'
         # conn_str = 'postgresql+psycopg2://test:testtest@localhost/test'
         #conn_str = 'postgresql+psycopg2://sojheuyzpdffcl:641961e7383892e4c407266f64423ef3155e67f9956afc14967cc64b9ff28994@ec2-176-34-111-152.eu-west-1.compute.amazonaws.com:5432/dflmsqumpg8dus'
-        conn_str = current_app.config['DATABASE_URI']
+        #conn_str = current_app.config['DATABASE_URI']
+        conn_str = 'postgresql+psycopg2://beabmullgttgfd:1685f6482f774544141a14475bad3ab0e039c5e5063ee3bac651d42a250c9368@ec2-54-73-22-169.eu-west-1.compute.amazonaws.com:5432/db0co4ifmg6e9b'
         self._engine = create_engine(conn_str)
         # Create a Session class bound to this engine
         self._Session = sessionmaker(bind=self._engine)
@@ -385,12 +386,15 @@ class _BaseQuery:
 
     def execute(self, session, **kwargs):
         """ Execute the query and return the result from fetchall() """
-        return session.execute(self._Q, kwargs).fetchall()
+        results = session.execute(text(self._Q), kwargs)
+        columns = results.keys()
+        for result in results.fetchall():
+            yield dict(zip(columns, result))
+        #return results.fetchall()
 
     def scalar(self, session, **kwargs):
         """ Execute the query and return the result from scalar() """
-        return session.scalar(self._Q, kwargs)
-
+        return session.scalar(text(self._Q), kwargs)
 
 
 class QueryUnseenMessages(_BaseQuery):
@@ -407,7 +411,7 @@ class QueryUnseenMessages(_BaseQuery):
 class QueryUsers(_BaseQuery):
 
     _Q = """
-        SELECT u.id, u.name, u.email, c.name as company, u.role, count_cards_left(u.id, '2020') as cards_left, max_cards
+        SELECT u.id, u.name, u.email, c.name as company, u.role, count_cards_left(u.id, extract(year from now())::integer) as cards_left, max_cards
         FROM users u
         LEFT OUTER JOIN access a
         ON a.user_id = u.id

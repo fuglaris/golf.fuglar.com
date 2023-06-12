@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "golf-fuglar-com"
+version = "0.1.0"
+description = ""
+authors = ["Your Name <you@example.com>"]
+readme = "README.md"
+packages = [{include = "golf"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+flask = "^2.3.2"
+flask-assets = "^2.0"
+flask-login = "^0.6.2"
+psycopg2 = "^2.9.6"
+sqlalchemy = "^2.0.16"
+gunicorn = "^20.1.0"
+flask-argon2 = "^0.3.0.0"
+rauth = "^0.7.3"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

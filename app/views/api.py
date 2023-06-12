@@ -52,7 +52,10 @@ def api_availible_cards():
         query = qAC.execute(session=session,
             user_id=current_user.id,
             date=datetime.strptime(request.args.get('dateid'), "%Y%m%d").date())
+
+        print(query)
         for q in query:
+            print(q, q.keys())
             return_obj.append(dict(q))
 
         return jsonify(return_obj)
