@@ -39,14 +39,6 @@ desc = SqlDesc
 class DB_Connection:
 
     def __init__(self):
-
-        # conn_str = 'postgresql://test'
-        # conn_str = 'sqlite:///user.db'
-        # conn_str = 'postgresql+psycopg2://user:password@hostname/database_name'
-        # conn_str = 'postgresql+psycopg2://test:testtest@localhost/test'
-        #conn_str = 'postgresql+psycopg2://sojheuyzpdffcl:641961e7383892e4c407266f64423ef3155e67f9956afc14967cc64b9ff28994@ec2-176-34-111-152.eu-west-1.compute.amazonaws.com:5432/dflmsqumpg8dus'
-        #conn_str = current_app.config['DATABASE_URI']
-        conn_str = 'postgresql+psycopg2://beabmullgttgfd:1685f6482f774544141a14475bad3ab0e039c5e5063ee3bac651d42a250c9368@ec2-54-73-22-169.eu-west-1.compute.amazonaws.com:5432/db0co4ifmg6e9b'
         self._engine = create_engine(conn_str)
         # Create a Session class bound to this engine
         self._Session = sessionmaker(bind=self._engine)

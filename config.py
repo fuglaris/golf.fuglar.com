@@ -28,11 +28,11 @@ class Config(object):
     OAUTH_CREDENTIALS = {
        'facebook': {
            'id': '642104792615678',
-           'secret': '6567bb17586249896670965cc7e40053'
+           'secret': os.environ.get('FB_SECRET')
        },
        'google': {
            'id': '4219908234-ktvfr0ojp5j3gan8tk09cfbh8c4kvgj1.apps.googleusercontent.com',
-           'secret': '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'
+           'secret': os.environ.get('G_SECRET')
        },
        'microsoft': {
            'id': '',
@@ -51,8 +51,7 @@ class ProductionConfig(Config):
     
 
 class DevelopmentConfig(Config):
-    #DATABASE_URI = 'postgresql+psycopg2://sucufvwoyqhjou:494ef44cf2cfe52f5c58ed2460049c67be8c73779cb1a92f460e27f45f7c9543@ec2-54-247-79-178.eu-west-1.compute.amazonaws.com:5432/d49cjvdpjfeiu7'
-    DATABASE_URI = 'postgresql+psycopg2://beabmullgttgfd:1685f6482f774544141a14475bad3ab0e039c5e5063ee3bac651d42a250c9368@ec2-54-73-22-169.eu-west-1.compute.amazonaws.com:5432/db0co4ifmg6e9b'
+    DATABASE_URI = os.environ.get('DATABASE_URL')
     DEBUG = True
 
 class TestingConfig(Config):
