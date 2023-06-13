@@ -39,6 +39,8 @@ desc = SqlDesc
 class DB_Connection:
 
     def __init__(self):
+
+        conn_str = current_app.config['DATABASE_URI']
         self._engine = create_engine(conn_str)
         # Create a Session class bound to this engine
         self._Session = sessionmaker(bind=self._engine)
